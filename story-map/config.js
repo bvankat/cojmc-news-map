@@ -1,7 +1,7 @@
 var config = {
 	style: 'mapbox://styles/mapbox/streets-v11',
 	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA',
-	showMarkers: true,
+	showMarkers: false,
 	markerColor: '#3FB1CE',
 	//projection: 'equirectangular',
 	//Read more about available projections here
@@ -10,8 +10,8 @@ var config = {
 	theme: 'light',
 	use3dTerrain: false, //set true for enabling 3D maps.
 	auto: false,
-	title: 'Story heading',
-	subtitle: 'Summary and description',
+	title: 'Optional story heading and title slide',
+	subtitle: 'Summary and description.',
 	byline: 'Optional byline goes here',
 	footer: 'Source: source citations, etc.',
 	chapters: [
@@ -24,7 +24,7 @@ var config = {
 			location: {
 				center: [-98.53151, 40.98629],
 				zoom: 5,
-				pitch: 60,
+				pitch: 20,
 				bearing: 0
 			},
 			mapAnimation: 'flyTo',
