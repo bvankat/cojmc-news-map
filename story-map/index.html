@@ -1,109 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>COJMC News Map - Story Map</title>
+	
 	<meta charset='utf-8' />
-	<title>Mapbox Storytelling</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
-	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
-	<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+	
+	<link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mapbox/assembly/publisher-staging/src/svgs/mapbox.svg">
+	<link rel="stylesheet" href="https://use.typekit.net/eof0lxo.css">
+	
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+	
+	<script src="https://unpkg.com/intersection-observer@0.12.0/intersection-observer.js"></script>
+	
 	<script src="https://unpkg.com/scrollama"></script>
+	
+
 	<style>
-		body {
-			margin:0;
-			padding:0;
-			font-family: sans-serif;
-		}
-		a, a:hover, a:visited {
-			color: #0071bc;
-		}
-		#map {
-			top:0;
-			height: 100vh;
-			width:100vw;
-			position: fixed;
-		}
-		#header {
-			margin: auto;
-			width: 100%;
-			position: relative;
-			z-index: 5;
-		}
-		#header h1, #header h2, #header p {
-			margin: 0;
-			padding: 2vh 2vw;
-			text-align: center;
-		}
-		#footer {
-			width: 100%;
-			min-height: 5vh;
-			padding-top: 2vh;
-			padding-bottom: 2vh;
-			text-align: center;
-			line-height: 25px;
-			font-size: 13px;
-			position: relative;
-			z-index: 5;
-		}
-		#features {
-			padding-top: 10vh;
-			padding-bottom: 10vh;
-		}
-		.hidden {
-			visibility: hidden;
-		}
-		.centered {
-			width: 50vw;
-			margin: 0 auto;
-		}
-		.lefty {
-			width: 33vw;
-			margin-left: 5vw;
-		}
-		.righty {
-			width: 33vw;
-			margin-left: 62vw;
-		}
-		.fully {
-			width: 100%;
-			margin: auto;
-		}
-		.light {
-			color: #444;
-			background-color: #fafafa;
-		}
-		.dark {
-			color: #fafafa;
-			background-color: #444;
-		}
-		.step {
-			padding-bottom: 50vh;
-			/* margin-bottom: 10vh; */
-			opacity: 0.25;
-		}
-		.step.active {
-			opacity: 0.9;
-		}
 
-		.step div {
-			padding:  25px 50px;
-			line-height: 25px;
-			font-size: 13px;
-		}
-
-		.step img {
-			width: 100%;
-		}
-
-		@media (max-width: 750px) {
+		@media screen and (max-width: 750px) {
 			.centered, .lefty, .righty, .fully {
-				width: 90vw;
+				width: 80vw;
 				margin: 0 auto;
 			}
+			
 		}
 
 		/* Fix issue on mobile browser where scroll breaks  */
-		.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan, 
+		.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan,
 		.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
 			touch-action: unset;
 		}
@@ -113,9 +38,12 @@
 <body>
 
 <div id="map"></div>
+<div id="mapInset"></div>
 <div id="story"></div>
-<script src="./config.js"></script>
+
+<script src="config.js"></script>
 <script>
+var initLoad = true;
 var layerTypes = {
 	'fill': ['fill-opacity'],
 	'line': ['line-opacity'],
@@ -252,8 +180,10 @@ var map = new mapboxgl.Map({
 	bearing: config.chapters[0].location.bearing,
 	pitch: config.chapters[0].location.pitch,
 	interactive: false,
-	transformRequest: transformRequest
+	transformRequest: transformRequest,
+	projection: config.projection
 });
+
 
 if (config.showMarkers) {
 	var marker = new mapboxgl.Marker({ color: config.markerColor });
@@ -263,29 +193,9 @@ if (config.showMarkers) {
 // instantiate the scrollama
 var scroller = scrollama();
 
+
 map.on("load", function() {
-	if (config.use3dTerrain) {
-		map.addSource('mapbox-dem', {
-			'type': 'raster-dem',
-			'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-			'tileSize': 512,
-			'maxzoom': 14
-		});
-		// add the DEM source as a terrain layer with exaggerated height
-		map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-
-		// add a sky layer that will show when the map is highly pitched
-		map.addLayer({
-			'id': 'sky',
-			'type': 'sky',
-			'paint': {
-				'sky-type': 'atmosphere',
-				'sky-atmosphere-sun': [0.0, 0.0],
-				'sky-atmosphere-sun-intensity': 15
-			}
-		});
-	};
-
+	
 	// setup the instance, pass callback functions
 	scroller
 	.setup({
@@ -293,11 +203,21 @@ map.on("load", function() {
 		offset: 0.5,
 		progress: true
 	})
-	.onStepEnter(response => {
+	.onStepEnter(async response => {
 		var chapter = config.chapters.find(chap => chap.id === response.element.id);
 		response.element.classList.add('active');
 		map[chapter.mapAnimation || 'flyTo'](chapter.location);
-
+		// Incase you do not want to have a dynamic inset map,
+		// rather want to keep it a static view but still change the
+		// bbox as main map move: comment out the below if section.
+		if (config.inset) {
+		  if (chapter.location.zoom < 5) {
+			insetMap.flyTo({center: chapter.location.center, zoom: 0});
+		  }
+		  else {
+			insetMap.flyTo({center: chapter.location.center, zoom: 3});
+		  }
+		}
 		if (config.showMarkers) {
 			marker.setLngLat(chapter.location.center);
 		}
@@ -308,10 +228,10 @@ map.on("load", function() {
 			window[chapter.callback]();
 		}
 		if (chapter.rotateAnimation) {
-			map.once('moveend', function() {
+			map.once('moveend', () => {
 				const rotateNumber = map.getBearing();
-				map.rotateTo(rotateNumber + 90, {
-					duration: 24000, easing: function (t) {
+				map.rotateTo(rotateNumber + 180, {
+					duration: 30000, easing: function (t) {
 						return t;
 					}
 				});
@@ -326,6 +246,8 @@ map.on("load", function() {
 		}
 	});
 });
+
+
 
 // setup resize event
 window.addEventListener('resize', scroller.resize);
