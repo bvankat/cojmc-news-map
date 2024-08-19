@@ -1,167 +1,108 @@
 var config = {
-	style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
-	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbDhremdwNjYwNG5sM3ZveWFjdnYyNWlrIn0.LbXcNG9B8t1-_FCVnE2_4A',
-	showMarkers: false,
+	style: 'mapbox://styles/mapbox/streets-v11',
+	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA',
+	showMarkers: true,
 	markerColor: '#3FB1CE',
-	projection: 'equirectangular',
-	title: 'Testing a new story map',
-	subtitle: 'Summary paragraph here',
-	inset: false,
+	//projection: 'equirectangular',
+	//Read more about available projections here
+	//https://docs.mapbox.com/mapbox-gl-js/example/projections/
+	inset: true,
 	theme: 'light',
-	use3dTerrain: true, //set true for enabling 3D maps.
+	use3dTerrain: false, //set true for enabling 3D maps.
+	auto: false,
+	title: 'The Title Text of this Story',
+	subtitle: 'A descriptive and interesting subtitle to draw in the reader',
+	byline: 'By a Digital Storyteller',
+	footer: 'Source: source citations, etc. <br> Created using <a href="https://github.com/mapbox/storytelling" target="_blank">Mapbox Storytelling</a> template.',
 	chapters: [
 		{
-			id: 'chapter-1',
+			id: 'slug-style-id',
 			alignment: 'left',
 			hidden: false,
-			description: 'Slide 1',
+			title: 'Display Title',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 			location: {
-				center: [-100, 41.5],
-				zoom: 4.7,
-				pitch: 5,
-				bearing: 0,
-				duration: 2000
+				center: [-122.418398, 37.759483],
+				zoom: 8.5,
+				pitch: 60,
+				bearing: 0
 			},
-			mapAnimation: 'easeTo',
+			mapAnimation: 'flyTo',
 			rotateAnimation: false,
 			callback: '',
 			onChapterEnter: [
-				{
-					 layer: 'nebraska-ev-charging-stations',
-					 opacity: 0
-				 },
-				{
-					 layer: 'nebraska-ev-deserts',
-					 opacity: 0
-				 },
-				{
-					 layer: 'interstate-80',
-					 opacity: 0
-				 },
-				{
-					 layer: 'EV-planned-chargers',
-					 opacity: 0
-				 },
-				{
-					 layer: 'nebraska-outline',
-					 opacity: 0.8,
-					 duration: 500
-				 },
-				 {
-					  layer: 'nebraska-ev-counties',
-					  opacity: 1,
-					  duration: 2000
-				  }
+				// {
+				//     layer: 'layer-name',
+				//     opacity: 1,
+				//     duration: 5000
+				// }
 			],
+			onChapterExit: [
+				// {
+				//     layer: 'layer-name',
+				//     opacity: 0
+				// }
+			]
+		},
+		{
+			id: 'second-identifier',
+			alignment: 'right',
+			hidden: false,
+			title: 'Second Title',
+			description: 'Copy these sections to add to your story.',
+			location: {
+				center: [-77.020636, 38.886900],
+				zoom: 8.5,
+				pitch: 60,
+				bearing: -43.2,
+				// flyTo additional controls-
+				// These options control the flight curve, making it move
+				// slowly and zoom out almost completely before starting
+				// to pan.
+				//speed: 2, // make the flying slow
+				//curve: 1, // change the speed at which it zooms out
+			},
+			mapAnimation: 'flyTo',
+			rotateAnimation: true,
+			callback: '',
+			onChapterEnter: [],
 			onChapterExit: []
 		},
 		{
-			id: 'chapter-2',
+			id: 'third-identifier',
 			alignment: 'left',
 			hidden: false,
-			description: 'Slide 2',
+			title: 'Third Title',
+			description: 'Copy these sections to add to your story.',
 			location: {
-				center: [-99.5, 41.5],
-				zoom: 4.9,
+				center: [6.15116, 46.20595],
+				zoom: 12.52,
+				pitch: 8.01,
+				bearing: 0.00
+			},
+			mapAnimation: 'flyTo',
+			rotateAnimation: false,
+			callback: '',
+			onChapterEnter: [],
+			onChapterExit: []
+		},
+		{
+			id: 'fourth-chapter',
+			alignment: 'fully',
+			hidden: false,
+			title: 'Third Title',
+			description: 'Copy these sections to add to your story.',
+			location: {
+				center: [-58.54195, -34.71600],
+				zoom: 4,
 				pitch: 0,
-				bearing: 0,
-				duration: 3000
+				bearing: 0
 			},
-			mapAnimation: 'easeTo',
+			mapAnimation: 'flyTo',
 			rotateAnimation: false,
 			callback: '',
-			onChapterEnter: [
-				{
-					  layer: 'nebraska-ev-charging-stations',
-					  opacity: 1,
-					  duration: 1500
-				  },  
-				{
-					  layer: 'nebraska-outline',
-					  opacity: 0.5,
-					  duration: 500
-				  },
-				{
-					  layer: 'nebraska-ev-counties',
-					  opacity: 0,
-					  duration: 2000
-				  },
-				{
-					  layer: 'interstate-80',
-					  opacity: 1,
-					  duration: 1000
-				  }
-			],
-			onChapterExit: []
-		},
-		{
-			id: 'chapter-3',
-			alignment: 'left',
-			hidden: false,
-			description: '[ Slide 3 ]',
-			location: {
-				center: [-99.5, 41.5],
-				zoom: 4.8,
-				pitch: 0,
-				bearing: 0,
-				duration: 2000
-			},
-			mapAnimation: 'easeTo',
-			rotateAnimation: false,
-			callback: '',
-			onChapterEnter: [
-				{
-					  layer: 'nebraska-ev-charging-stations',
-					  opacity: 0,
-					  duration: 2000
-				  },
-				{
-					  layer: 'nebraska-ev-counties',
-					  opacity: 0,
-					  duration: 1000
-				  },
-				{
-					  layer: 'nebraska-ev-deserts',
-					  opacity: 1,
-					  duration: 1000
-				  }
-			],
-			onChapterExit: []
-		},
-		{
-			id: 'chapter-4',
-			alignment: 'left',
-			hidden: false,
-			description: 'Slide 4',
-			location: {
-				center: [-99.5, 41.5],
-				zoom: 4.9,
-				pitch: 5,
-				bearing: 0,
-				duration: 2000
-			},
-			mapAnimation: 'easeTo',
-			rotateAnimation: false,
-			callback: '',
-			onChapterEnter: [
-				  {
-						layer: 'nebraska-ev-charging-stations',
-						opacity: 0,
-						duration: 3000
-					},
-				  {
-						layer: 'nebraska-ev-deserts',
-						opacity: 0.75,
-						duration: 3000
-					},
-				  {
-						layer: 'EV-planned-chargers',
-						opacity: 1,
-						duration: 1000
-					},
-			],
+			onChapterEnter: [],
 			onChapterExit: []
 		}
-		
 	]
 };
