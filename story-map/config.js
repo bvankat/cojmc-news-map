@@ -65,7 +65,13 @@ var config = {
 			mapAnimation: 'flyTo',
 			rotateAnimation: true,
 			callback: '',
-			onChapterEnter: [],
+			onChapterEnter: [
+				 {
+				     layer: 'Community Anchors',
+				     opacity: 1,
+				     duration: 5000
+				 }
+			],
 			onChapterExit: []
 		},
 		{
@@ -83,7 +89,11 @@ var config = {
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
 			callback: '',
-			onChapterEnter: [],
+			onChapterEnter: [{
+					 layer: 'Broadband Counties',
+					 opacity: 1,
+					 duration: 5000
+				 }],
 			onChapterExit: []
 		},
 		{
@@ -101,7 +111,13 @@ var config = {
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
 			callback: '',
-			onChapterEnter: [],
+			onChapterEnter: [
+				{
+					 layer: 'Public Safety Entities',
+					 opacity: 1,
+					 duration: 5000
+				 }
+			],
 			onChapterExit: []
 		}
 	]
