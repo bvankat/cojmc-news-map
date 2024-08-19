@@ -10,20 +10,20 @@ var config = {
 	theme: 'light',
 	use3dTerrain: false, //set true for enabling 3D maps.
 	auto: false,
-	title: 'The Title Text of this Story',
-	subtitle: 'A descriptive and interesting subtitle to draw in the reader',
-	byline: 'By a Digital Storyteller',
-	footer: 'Source: source citations, etc. <br> Created using <a href="https://github.com/mapbox/storytelling" target="_blank">Mapbox Storytelling</a> template.',
+	title: 'Story heading',
+	subtitle: 'Summary and description',
+	byline: 'Optional byline goes here',
+	footer: 'Source: source citations, etc.',
 	chapters: [
 		{
 			id: 'slug-style-id',
 			alignment: 'left',
 			hidden: false,
-			title: 'Display Title',
-			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+			title: 'Slide 1',
+			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
 			location: {
-				center: [-122.418398, 37.759483],
-				zoom: 8.5,
+				center: [-98.53151, 40.98629],
+				zoom: 5,
 				pitch: 60,
 				bearing: 0
 			},
@@ -48,10 +48,10 @@ var config = {
 			id: 'second-identifier',
 			alignment: 'right',
 			hidden: false,
-			title: 'Second Title',
-			description: 'Copy these sections to add to your story.',
+			title: 'Slide 2',
+			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
 			location: {
-				center: [-77.020636, 38.886900],
+				center: [-96.710, 40.833],
 				zoom: 8.5,
 				pitch: 60,
 				bearing: -43.2,
@@ -73,9 +73,9 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: 'Third Title',
-			description: 'Copy these sections to add to your story.',
+			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
 			location: {
-				center: [6.15116, 46.20595],
+				center: [-102.886, 42.103],
 				zoom: 12.52,
 				pitch: 8.01,
 				bearing: 0.00
@@ -90,10 +90,10 @@ var config = {
 			id: 'fourth-chapter',
 			alignment: 'fully',
 			hidden: false,
-			title: 'Third Title',
-			description: 'Copy these sections to add to your story.',
+			title: 'Slide 4',
+			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
 			location: {
-				center: [-58.54195, -34.71600],
+				center: [-99.765, 40.768],
 				zoom: 4,
 				pitch: 0,
 				bearing: 0
