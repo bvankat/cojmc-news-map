@@ -1,8 +1,8 @@
 var config = {
-	style: 'mapbox://styles/branigan/cjz37rcb003ib1cr3s8rnkt2d',
+	style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
 	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA',
 	showMarkers: false,
-	theme: 'dark',
+	theme: 'light',
 	use3dTerrain: true,
 	title: 'Glaciers of Glacier National Park',
 	subtitle: 'Change in coverage from 1998 to 2015',
