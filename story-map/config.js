@@ -1,6 +1,6 @@
 var config = {
 	style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
-	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA',
+	accessToken: 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbDhremdwNjYwNG5sM3ZveWFjdnYyNWlrIn0.LbXcNG9B8t1-_FCVnE2_4A',
 	showMarkers: false,
 	markerColor: '#3FB1CE',
 	//projection: 'equirectangular',
