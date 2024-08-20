@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>COJMC - News Map Base Layers</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<style>
+	#menu {
+		background: #fff;
+		position: absolute;
+		z-index: 1;
+		top: 60px;
+		left: 10px;
+		width: 150px;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		font-family: 'Open Sans', sans-serif;
+		box-shadow: 0 0 20px rgba(0,0,0,0.15);
+
+	}
+
+	#menu a {
+		font-size: 13px;
+		color: #404040;
+		display: block;
+		margin: 0;
+		padding: 0;
+		padding: 10px;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+		text-align: left;
+	}
+
+	#menu a:last-child {
+		border: none;
+	}
+
+	#menu a:hover {
+		background-color: #f8f8f8;
+		color: #404040;
+	}
+
+	#menu a.active {
+		background-color: #3887be;
+		color: #ffffff;
+	}
+
+	#menu a.active:hover {
+		background: #3074a4;
+	}
+	
+	#menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
+	
+	/**
+	* Set rules for how the map overlays
+	* (information box and legend) will be displayed
+	* on the page. */
+	.map-overlay {
+	  position: absolute;
+	  bottom: 0;
+	  right: 0;
+	  background: rgba(255,255,255,0.8);
+	  margin-right: 10px;
+	  font-size: 12px;
+	  overflow: auto;
+	  padding: 10px;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  font-family: 'Open Sans', sans-serif;
+	  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+
+	}
+	
+	#features {
+	  top: 0;
+	  height: 100px;
+	  margin-top: 10px;
+	  width: 100px;
+	}
+	
+	#legend {
+	  box-shadow: 0 1px 2px rgba(0 0 0 0.1);
+	  line-height: 18px;
+	  height: 50px;
+	  margin-bottom: 30px;
+	  width: 100px;
+	}
+	
+	.legend-key {
+	  display: inline-block;
+	  width: 10px;
+	  height: 10px;
+	  margin-right: 5px;
+	}
+</style>
+
+<nav id="menu"><p>Map data layers</nav>
+<div id="map"></div>
+<div class="map-overlay" id="features">
+  <p class="features-title">[ Layer info / hover details will go in here ]</h2>
+  <div id="pd"><p>Hover over a state!</p></div>
+</div>
+<div class="map-overlay" id="legend">
+	<p>[ Map legend can go down here? ]</p>
+</div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA'; //Mapbox token COJMC News Map
+	const map = new mapboxgl.Map({
+		container: 'map',
+		// Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+		style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
+		zoom: 5.5,
+		center: [-100, 41.5]
+	});
+	
+	// After the last frame rendered before the map enters an "idle" state.
+	map.on('idle', () => {
+		
+		// Set up the choropleth color scale based on the margin of victory
+		map.setPaintProperty('2020 Presidential', 'fill-color', [
+			'interpolate',
+			['linear'],
+			['abs', ['-', ['get', 'Trump_PCT'], ['get', 'Biden_PCT']]],
+			// Define breakpoints for margin values and corresponding colors
+			0, [
+				'case',
+				['>', ['get', 'Trump_PCT'], ['get', 'Biden_PCT']], 
+				'#FFBFBF', // Light red for Trump with small margin
+				'#BFBFFF'  // Light blue for Biden with small margin
+			],
+			25, [
+				'case',
+				['>', ['get', 'Trump_PCT'], ['get', 'Biden_PCT']], 
+				'#FF8080', // Darker red for Trump
+				'#8080FF'  // Darker blue for Biden
+			],
+			50, [
+				'case',
+				['>', ['get', 'Trump_PCT'], ['get', 'Biden_PCT']], 
+				'#FF4040', // Even darker red for Trump
+				'#4040FF'  // Even darker blue for Biden
+			],
+			75, [
+				'case',
+				['>', ['get', 'Trump_PCT'], ['get', 'Biden_PCT']], 
+				'#FF0000', // Darkest red for Trump
+				'#0000FF'  // Darkest blue for Biden
+			]
+		]);
+		
+		// Optionally adjust the opacity if needed
+		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
+		
+		
+
+		// Enumerate ids of the layers.
+		const toggleableLayerIds = [
+			'Demographics', 
+			'2020 Presidential', 
+			'2022 Midterms', 
+			'Registered Voters', 
+			'Broadband Cities', 
+			'Broadband Counties', 
+			'Libraries', 
+			'Public Safety Entities',
+			'Healthcare Entities',
+		];
+
+		// Set up the corresponding toggle button for each layer.
+		for (const id of toggleableLayerIds) {
+			// Skip layers that already have a button set up.
+			if (document.getElementById(id)) {
+				continue;
+			}
+
+			// Create a link.
+			const link = document.createElement('a');
+			link.id = id;
+			link.href = '#';
+			link.textContent = id;
+			link.className = '';
+
+			// Show or hide layer when the toggle is clicked.
+			link.onclick = function (e) {
+				const clickedLayer = this.textContent;
+				e.preventDefault();
+				e.stopPropagation();
+
+				const visibility = map.getLayoutProperty(
+					clickedLayer,
+					'visibility'
+				);
+
+				// Toggle layer visibility by changing the layout object's visibility property.
+				if (visibility === 'visible') {
+					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+					this.className = '';
+				} else {
+					this.className = 'active';
+					map.setLayoutProperty(
+						clickedLayer,
+						'visibility',
+						'visible'
+					);
+				}
+
+			};
+
+			const layers = document.getElementById('menu');
+			layers.appendChild(link);
+		}
+		
+		
+	});
+		var currentPopup;
+		
+		map.on('click', '2020 Presidential', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var county = e.features[0].properties.NAME;
+			var trump = e.features[0].properties.Trump_PCT;
+			var biden = e.features[0].properties.Biden_PCT;
+			var margin = Math.abs(trump - biden).toFixed(2); // Rounded to 2 decimal places
+			var winner = trump > biden ? 'Trump' : 'Biden'; // Determine the winner
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML("<p><strong>" + county + " County</strong></p><p>2020 result: " + winner + " +" + margin + "%</p")
+				.addTo(map);
+		});
+		
+		// Healthcare Entities
+		map.on('click', 'Healthcare Entities', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var name = e.features[0].properties.entity_name;
+			var address = e.features[0].properties.address_primary;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML("<p><strong>" + name + "</strong></p><p>" + address + "</p>")
+				.addTo(map);
+		});
+		
+
+		map.on('click', 'Community Anchors', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var name = e.features[0].properties.entity_name;
+			var address = e.features[0].properties.address_primary;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML("<p><strong>" + name + "</strong></p><p>" + address + "</p>")
+				.addTo(map);
+		});
+		
+	
+	// Example from: https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-geocoder/  
+	map.addControl(  
+		new MapboxGeocoder({  
+		  accessToken: mapboxgl.accessToken,  
+		  mapboxgl: mapboxgl
+		}), 'top-left'  
+	);
+</script>
+
+</body>
+</html>
