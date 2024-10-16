@@ -37,6 +37,16 @@
 	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; height: 50px; margin-bottom: 30px; width: 100px; }
 	
 	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
+	
+	.mapboxgl-popup-content { font-family: system-ui, sans-serif; padding: 15px; border-radius: 8px; }
+	.mapboxgl-popup-content p { font-size: 13px; line-height: 1.5; margin: 0; }
+	.mapboxgl-popup-content p.small { font-size: 11px; color: #aaa; margin-bottom: 5px; }
+	.mapboxgl-popup-content h3 { margin: 0 0 5px 0; }
+	.mapboxgl-popup-content table { width: 100%; border-collapse: collapse; margin-top: 5px;  }
+	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; }
+	.mapboxgl-popup-content table td:first-child { color: #666; text-transform: uppercase; font-size: 11px; padding-right: 10px;}
+	.mapboxgl-popup-content table td:last-child { text-align: right; }
+	
 </style>
 
 </head>
@@ -44,7 +54,7 @@
 <body>
 
 	<nav id="menu-news" class="map-menu"><p>News Layers</nav>
-	<nav id="menu-demographics" class="map-menu"><p>Demographics Layers</nav>
+	<nav id="menu-demographics" class="map-menu"><p>Demographics</nav>
 
 	<div id="map"></div>
 
@@ -169,6 +179,9 @@
 				'fill-opacity': 0.6
 		  	}
 		});
+		
+		const mapLayers = map.getStyle().layers;
+		console.log('Layers loaded: ', mapLayers);
 	});
 	
 	// After the last frame rendered before the map enters an "idle" state.
@@ -215,7 +228,7 @@
 		// Enumerate ids of the layers.
 		const toggleableDataLayers = [
 			'Broadcast LNOs',
-			'NPM Broadcast',
+			'NPM - Broadcast',
 			'Statewide News Orgs',
 			'LNOs - Print-Digital',
 			'Staffing - Counties',
@@ -334,6 +347,37 @@
 			if (currentPopup) {
 				currentPopup.remove();
 			}
+						
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var callsign = e.features[0].properties.callsign;
+			var freq = e.features[0].properties.frequency;
+			var service = e.features[0].properties.service;
+			var owner = e.features[0].properties.newsorg_ow;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + callsign + "</h3>" +
+					"<p>Station Details</p>" +
+					"<table><tbody>" +
+					"<tr><td>Frequency</td><td>" + freq + " " + service + "</td><tr>" + 
+					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		
+		
+		// NPM Broadcast popups
+		map.on('click', 'NPM - Broadcast', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			console.log("You clicked on: ", e);
+
 			
 			var coordinates = e.features[0].geometry.coordinates.slice();
 			var callsign = e.features[0].properties.callsign;
@@ -343,7 +387,69 @@
 		
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
-				.setHTML("<p><strong>" + callsign + "</strong></p><p>Station owner: " + owner + "</p><p>Frequency: " + freq + " " + service + "</p>")
+				.setHTML(
+					"<h3>" + callsign + "</h3>" +
+					"<table><tbody>" +
+					"<tr><td>Frequency</td><td>" + freq + " " + service + "</td><tr>" + 
+					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		
+		// LNO Print or Digital popups
+		map.on('click', 'LNOs - Print-Digital', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			console.log("You clicked on: ", e.features[0])
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var name = e.features[0].properties.newsorg_na;
+			var county = e.features[0].properties.newsorg_co;
+			var city = e.features[0].properties.City
+			var owner = e.features[0].properties.newsorg_ow;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + name + "</h3>" +
+					"<table><tbody>" +
+					"<tr><td>City</td><td>" + city + "</td><tr>" + 
+					"<tr><td>County</td><td>" + county + "</td><tr>" + 
+					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		// Statewide orgs popups
+		map.on('click', 'Statewide News Orgs', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			console.log("You clicked on: ", e.features[0])
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var name = e.features[0].properties.newsorg_name;
+			var county = e.features[0].properties.newsorg_county;
+			var city = e.features[0].properties.City
+			var owner = e.features[0].properties.newsorg_owner;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + name + "</h3>" +
+					"<table><tbody>" +
+					"<tr><td>City</td><td>" + city + "</td><tr>" + 
+					"<tr><td>County</td><td>" + county + "</td><tr>" + 
+					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
@@ -419,6 +525,31 @@
 					"<p>Black: " + black + "%</p>" + 
 					"<p>Hispanic: " + hispanic + "%</p>" +
 					"<p>White: " + white + "%</p>")
+				.addTo(map);
+		});
+		
+		// County staffing popups
+		map.on('click', 'Staffing - Counties', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var county = e.features[0].properties.NAMELSAD;
+			var county_ft = e.features[0].properties.COUNTY_FT;
+			var county_pt = e.features[0].properties.COUNTY_PT;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p>Journalists working in the county</p>" +
+					"<table><tbody>" +
+					"<tr><td>Full-time</td><td>" + county_ft + "</td><tr>" + 
+					"<tr><td>Part-time</td><td>" + county_pt + "</td><tr>" + 
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
