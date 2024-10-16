@@ -17,7 +17,7 @@
 	body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 	
-	#menu { background: #fff; position: absolute; z-index: 1; top: 60px; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
+	#menu { background: #fff; position: absolute; z-index: 1; top: 60px; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
 
 	#menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
 
@@ -26,15 +26,11 @@
 	#menu a:hover { background-color: #f8f8f8; color: #404040; }
 
 	#menu a.active { background-color: #3887be; color: #ffffff; }
-
-	#menu a.active:hover { background: #3074a4; }
 	
 	#menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
-	
-	#features { top: 0; height: 100px; margin-top: 10px; width: 100px; }
-	
+		
 	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; height: 50px; margin-bottom: 30px; width: 100px; }
 	
 	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
@@ -44,20 +40,17 @@
 
 <body>
 
-	<nav id="menu"><p>Map layers</nav>
+	<nav id="menu"><p>News Desert Layers</nav>
 
 	<div id="map"></div>
 
-	<div class="map-overlay" id="features">
-    	<p class="features-title">[ Layer info / hover details will go in here ]</h2>
-	</div>
 	<div class="map-overlay" id="legend">
 		<p>[ Map legend can go down here? ]</p>
 	</div>
 
 <script>
 	
-	// Does this work? 
+	// Eds note: Does this work? 
 	const bounds = [  
 		[ -108.32, 37.57 ],
 		[ -90.35, 45.54 ]
@@ -89,6 +82,90 @@
 	var nav = new mapboxgl.NavigationControl();
 	map.addControl(nav, 'top-right');
 	
+	
+	// Let's add some layers
+	
+	map.on('load', function () {
+	
+		map.addSource('Demographics', {
+			type: 'geojson',
+			// Use a URL for the value for the `data` property.
+			data: '../data/2022-5YACS-DEMOGRAPHICS.geojson',
+			generateId: true
+			});
+		
+		map.addLayer({
+			'id': 'Race % - White',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+		
+		map.addLayer({
+			'id': 'Race % - Hispanic',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+		
+		map.addLayer({
+			'id': 'Bachelors Degree',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+		
+		map.addLayer({
+			'id': 'US Born',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+		
+		map.addLayer({
+			'id': 'Veterans',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+		
+		map.addLayer({
+			'id': 'Own vs. Rent',
+			'type': 'fill',
+			'source': 'Demographics',
+			'layout': {
+				'visibility': 'none'
+			},
+			'paint': {
+				'fill-opacity': 0.6
+		  	}
+		});
+	});
 	
 	// After the last frame rendered before the map enters an "idle" state.
 	map.on('idle', () => {
@@ -133,18 +210,20 @@
 		// Enumerate ids of the layers.
 		const toggleableLayerIds = [
 			'Broadcast LNOs',
+			'NPM Broadcast',
 			'Statewide News Orgs',
 			'LNOs - Print-Digital',
 			'Staffing - Counties',
-			'Demographics', 
+			'Race % - White', 
+			'Race % - Hispanic', 
+			'Bachelors Degree', 
+			'US Born', 
+			'Veterans', 
+			'Own vs. Rent', 
 			'2020 Presidential', 
-			'2022 Midterms', 
 			'Registered Voters', 
 			'Broadband Cities', 
 			'Broadband Counties', 
-			'Libraries', 
-			'Public Safety Entities',
-			'Healthcare Entities',
 		];
 
 		// Set up the corresponding toggle button for each layer.
@@ -166,12 +245,12 @@
 				const clickedLayer = this.textContent;
 				e.preventDefault();
 				e.stopPropagation();
-
+			
 				const visibility = map.getLayoutProperty(
 					clickedLayer,
 					'visibility'
 				);
-
+			
 				// Toggle layer visibility by changing the layout object's visibility property.
 				if (visibility === 'visible') {
 					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
@@ -184,7 +263,7 @@
 						'visible'
 					);
 				}
-
+			
 			};
 
 			const layers = document.getElementById('menu');
@@ -237,8 +316,8 @@
 				.addTo(map);
 		});
 		
-		// Healthcare Entities
-		map.on('click', 'Healthcare Entities', function (e) {
+		// Demographics layer popups
+		map.on('click', 'Race % - White', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -246,17 +325,25 @@
 			}
 			
 			var coordinates = e.features[0].geometry.coordinates.slice();
-			var name = e.features[0].properties.entity_name;
-			var address = e.features[0].properties.address_primary;
-		
+			var county = e.features[0].properties.NAMELSAD;
+			var asian = e.features[0].properties.Asian;
+			var black = e.features[0].properties.Black;
+			var hispanic = e.features[0].properties.Hispanic;
+			var white = e.features[0].properties.White;
+			
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
-				.setHTML("<p><strong>" + name + "</strong></p><p>" + address + "</p>")
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>POPULATION BY RACE</p>" +
+					"<p>Asian: " + asian + "%</p>" +
+					"<p>Black: " + black + "%</p>" + 
+					"<p>Hispanic: " + hispanic + "%</p>" +
+					"<p>White: " + white + "%</p>")
 				.addTo(map);
 		});
 		
-
-		map.on('click', 'Community Anchors', function (e) {
+		map.on('click', 'Race % - Hispanic', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -264,14 +351,25 @@
 			}
 			
 			var coordinates = e.features[0].geometry.coordinates.slice();
-			var name = e.features[0].properties.entity_name;
-			var address = e.features[0].properties.address_primary;
-		
+			var county = e.features[0].properties.NAMELSAD;
+			var asian = e.features[0].properties.Asian;
+			var black = e.features[0].properties.Black;
+			var hispanic = e.features[0].properties.Hispanic;
+			var white = e.features[0].properties.White;
+			
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
-				.setHTML("<p><strong>" + name + "</strong></p><p>" + address + "</p>")
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>POPULATION BY RACE</p>" +
+					"<p>Asian: " + asian + "%</p>" +
+					"<p>Black: " + black + "%</p>" + 
+					"<p>Hispanic: " + hispanic + "%</p>" +
+					"<p>White: " + white + "%</p>")
 				.addTo(map);
 		});
+		
+		
 </script>
 
 </body>
