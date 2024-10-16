@@ -2,9 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>COJMC - News Map Base Layers</title>
+<title>COJMC News Map - Layers</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-	<link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 
 <!-- Load the `mapbox-gl-geocoder` plugin. -->
@@ -12,118 +14,81 @@
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
 <style>
-body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-</style>
-</head>
-<body>
-<style>
-	#menu {
-		background: #fff;
-		position: absolute;
-		z-index: 1;
-		top: 60px;
-		left: 10px;
-		width: 150px;
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		font-family: 'Open Sans', sans-serif;
-		box-shadow: 0 0 20px rgba(0,0,0,0.15);
+	body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+	
+	#menu { background: #fff; position: absolute; z-index: 1; top: 60px; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 
-	}
+	#menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
 
-	#menu a {
-		font-size: 13px;
-		color: #404040;
-		display: block;
-		margin: 0;
-		padding: 0;
-		padding: 10px;
-		text-decoration: none;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-		text-align: left;
-	}
+	#menu a:last-child { border: none; }
 
-	#menu a:last-child {
-		border: none;
-	}
+	#menu a:hover { background-color: #f8f8f8; color: #404040; }
 
-	#menu a:hover {
-		background-color: #f8f8f8;
-		color: #404040;
-	}
+	#menu a.active { background-color: #3887be; color: #ffffff; }
 
-	#menu a.active {
-		background-color: #3887be;
-		color: #ffffff;
-	}
-
-	#menu a.active:hover {
-		background: #3074a4;
-	}
+	#menu a.active:hover { background: #3074a4; }
 	
 	#menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
 	
-	/**
-	* Set rules for how the map overlays
-	* (information box and legend) will be displayed
-	* on the page. */
-	.map-overlay {
-	  position: absolute;
-	  bottom: 0;
-	  right: 0;
-	  background: rgba(255,255,255,0.8);
-	  margin-right: 10px;
-	  font-size: 12px;
-	  overflow: auto;
-	  padding: 10px;
-	  border: 1px solid rgba(0, 0, 0, 0.2);
-	  font-family: 'Open Sans', sans-serif;
-	  box-shadow: 0 0 20px rgba(0,0,0,0.15);
-
-	}
+	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 	
-	#features {
-	  top: 0;
-	  height: 100px;
-	  margin-top: 10px;
-	  width: 100px;
-	}
+	#features { top: 0; height: 100px; margin-top: 10px; width: 100px; }
 	
-	#legend {
-	  box-shadow: 0 1px 2px rgba(0 0 0 0.1);
-	  line-height: 18px;
-	  height: 50px;
-	  margin-bottom: 30px;
-	  width: 100px;
-	}
+	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; height: 50px; margin-bottom: 30px; width: 100px; }
 	
-	.legend-key {
-	  display: inline-block;
-	  width: 10px;
-	  height: 10px;
-	  margin-right: 5px;
-	}
+	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
 </style>
 
-<nav id="menu"><p>Map data layers</nav>
-<div id="map"></div>
-<div class="map-overlay" id="features">
-  <p class="features-title">[ Layer info / hover details will go in here ]</h2>
-  <div id="pd"><p>Hover over a state!</p></div>
-</div>
-<div class="map-overlay" id="legend">
-	<p>[ Map legend can go down here? ]</p>
-</div>
+</head>
+
+<body>
+
+	<nav id="menu"><p>Map layers</nav>
+
+	<div id="map"></div>
+
+	<div class="map-overlay" id="features">
+    	<p class="features-title">[ Layer info / hover details will go in here ]</h2>
+	</div>
+	<div class="map-overlay" id="legend">
+		<p>[ Map legend can go down here? ]</p>
+	</div>
 
 <script>
+	
+	// Does this work? 
+	const bounds = [  
+		[ -108.32, 37.57 ],
+		[ -90.35, 45.54 ]
+	];  
+	
+	// Load initial map
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA'; //Mapbox token COJMC News Map
+	
 	const map = new mapboxgl.Map({
 		container: 'map',
-		// Choose from Mapbox's core styles, or make your own style with Mapbox Studio
 		style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
 		zoom: 5.5,
-		center: [-100, 41.5]
+		maxZoom: 9,
+		center: [-100, 41.5],
+		maxBounds: bounds
 	});
+	
+	// Add search control (geocoder)	
+	const geocoder = new MapboxGeocoder({
+		accessToken: mapboxgl.accessToken,
+		mapboxgl: mapboxgl,
+		placeholder: 'Find address or zip',
+		bbox: [-104.053514, 39.999751, -95.30829, 43.001707] // Bounding box for Nebraska
+	});
+	
+	// Zoom controls
+	map.addControl(geocoder, 'top-left');
+	map.scrollZoom.disable();
+	var nav = new mapboxgl.NavigationControl();
+	map.addControl(nav, 'top-right');
+	
 	
 	// After the last frame rendered before the map enters an "idle" state.
 	map.on('idle', () => {
@@ -167,6 +132,10 @@ body { margin: 0; padding: 0; }
 
 		// Enumerate ids of the layers.
 		const toggleableLayerIds = [
+			'Broadcast LNOs',
+			'Statewide News Orgs',
+			'LNOs - Print-Digital',
+			'Staffing - Counties',
 			'Demographics', 
 			'2020 Presidential', 
 			'2022 Midterms', 
@@ -226,6 +195,28 @@ body { margin: 0; padding: 0; }
 	});
 		var currentPopup;
 		
+		// Broadcast LNO popups
+		map.on('click', 'Broadcast LNOs', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var coordinates = e.features[0].geometry.coordinates.slice();
+			var callsign = e.features[0].properties.callsign;
+			var freq = e.features[0].properties.frequency;
+			var service = e.features[0].properties.service;
+			var owner = e.features[0].properties.newsorg_ow;
+		
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML("<p><strong>" + callsign + "</strong></p><p>Station owner: " + owner + "</p><p>Frequency: " + freq + " " + service + "</p>")
+				.addTo(map);
+		});
+		
+		
+		// 2020 Presidential layer popups
 		map.on('click', '2020 Presidential', function (e) {
 			
 			// Close the current popup if it exists
@@ -281,15 +272,6 @@ body { margin: 0; padding: 0; }
 				.setHTML("<p><strong>" + name + "</strong></p><p>" + address + "</p>")
 				.addTo(map);
 		});
-		
-	
-	// Example from: https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-geocoder/  
-	map.addControl(  
-		new MapboxGeocoder({  
-		  accessToken: mapboxgl.accessToken,  
-		  mapboxgl: mapboxgl
-		}), 'top-left'  
-	);
 </script>
 
 </body>
