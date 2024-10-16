@@ -17,17 +17,20 @@
 	body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 	
-	#menu { background: #fff; position: absolute; z-index: 1; top: 60px; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
-
-	#menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
-
-	#menu a:last-child { border: none; }
-
-	#menu a:hover { background-color: #f8f8f8; color: #404040; }
-
-	#menu a.active { background-color: #3887be; color: #ffffff; }
+	.map-menu { background: #fff; position: absolute; z-index: 1; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
 	
-	#menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
+	#menu-news { top: 60px; }
+	#menu-demographics { bottom: 60px; }
+
+	.map-menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
+
+	.map-menu a:last-child { border: none; }
+
+	.map-menu a:hover { background-color: #f8f8f8; color: #404040; }
+
+	.map-menu a.active { background-color: #3887be; color: #ffffff; }
+	
+	.map-menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 		
@@ -40,7 +43,8 @@
 
 <body>
 
-	<nav id="menu"><p>News Desert Layers</nav>
+	<nav id="menu-news" class="map-menu"><p>News Layers</nav>
+	<nav id="menu-demographics" class="map-menu"><p>Demographics Layers</nav>
 
 	<div id="map"></div>
 
@@ -203,17 +207,21 @@
 		]);
 		
 		// Optionally adjust the opacity if needed
-		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
+		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.3);
+		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.3);
 		
 		
 
 		// Enumerate ids of the layers.
-		const toggleableLayerIds = [
+		const toggleableDataLayers = [
 			'Broadcast LNOs',
 			'NPM Broadcast',
 			'Statewide News Orgs',
 			'LNOs - Print-Digital',
 			'Staffing - Counties',
+		];
+		
+		const toggleableDemographicLayers = [
 			'Race % - White', 
 			'Race % - Hispanic', 
 			'Bachelors Degree', 
@@ -226,8 +234,8 @@
 			'Broadband Counties', 
 		];
 
-		// Set up the corresponding toggle button for each layer.
-		for (const id of toggleableLayerIds) {
+		// Set up the toggles for each layer.
+		for (const id of toggleableDataLayers) {
 			// Skip layers that already have a button set up.
 			if (document.getElementById(id)) {
 				continue;
@@ -266,7 +274,52 @@
 			
 			};
 
-			const layers = document.getElementById('menu');
+			const layers = document.getElementById('menu-news');
+			layers.appendChild(link);
+		}
+
+
+
+		for (const id of toggleableDemographicLayers) {
+			// Skip layers that already have a button set up.
+			if (document.getElementById(id)) {
+				continue;
+			}
+
+			// Create a link.
+			const link = document.createElement('a');
+			link.id = id;
+			link.href = '#';
+			link.textContent = id;
+			link.className = '';
+
+			// Show or hide layer when the toggle is clicked.
+			link.onclick = function (e) {
+				const clickedLayer = this.textContent;
+				e.preventDefault();
+				e.stopPropagation();
+			
+				const visibility = map.getLayoutProperty(
+					clickedLayer,
+					'visibility'
+				);
+			
+				// Toggle layer visibility by changing the layout object's visibility property.
+				if (visibility === 'visible') {
+					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+					this.className = '';
+				} else {
+					this.className = 'active';
+					map.setLayoutProperty(
+						clickedLayer,
+						'visibility',
+						'visible'
+					);
+				}
+			
+			};
+
+			const layers = document.getElementById('menu-demographics');
 			layers.appendChild(link);
 		}
 		
