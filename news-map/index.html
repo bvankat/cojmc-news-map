@@ -45,9 +45,9 @@
 	.mapboxgl-popup-content p.small { font-size: 11px; color: #aaa; margin-bottom: 5px; }
 	.mapboxgl-popup-content h3 { margin: 0 0 5px 0; }
 	.mapboxgl-popup-content table { width: 100%; border-collapse: collapse; margin-top: 5px; color: #666; }
-	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; }
-	.mapboxgl-popup-content table td:first-child { padding-right: 10px;}
-	.mapboxgl-popup-content table td:last-child { text-align: right; }
+	.mapboxgl-popup-content table th { text-transform: uppercase; font-size: 90%; text-align: left; padding: 3px 0; border-bottom: 1px solid #ccc; font-weight: normal; color: #999; }
+	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; font-weight: 400; line-height: 1.3; }
+	.mapboxgl-popup-content table td:first-child { padding-right: 10px; font-weight: 600; }
 	
 </style>
 
@@ -230,9 +230,9 @@
 
 		// Enumerate ids of the layers.
 		const toggleableDataLayers = [
-			'TV and Radio Stations',
+			'TV and Radio Coverage',
 			'Nebraska Public Media',
-			'Statewide Organizations',
+			'Statewide - Print and Digital',
 			'Local News - Print and Digital',
 			'Journalists per County',
 		];
@@ -348,7 +348,7 @@
 		var currentPopup;
 		
 		// TV and Radio Stations popups
-		map.on('click', 'TV and Radio Stations', function (e) {
+		map.on('click', 'TV and Radio Coverage', function (e) {
 			
 			console.log("You clicked on: ", e);
 			console.log("Features at this point: ", e.features.length, e.features);
@@ -427,7 +427,8 @@
 			currentPopup = new mapboxgl.Popup()
 			.setLngLat(e.lngLat)
 						
-			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + 
+			"<table><thead><th>Name</th><th>Owner</th></thead><tbody>";
 			
 			e.features.forEach((feature) => {
 				const props = feature.properties;
@@ -458,7 +459,7 @@
 			currentPopup = new mapboxgl.Popup()
 			.setLngLat(e.lngLat)
 						
-			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><thead><th>Name</th><th>Owner</th></thead><tbody>";
 			
 			e.features.forEach((feature) => {
 				const props = feature.properties;
