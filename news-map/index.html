@@ -232,8 +232,8 @@
 		const toggleableDataLayers = [
 			'TV and Radio Coverage',
 			'Nebraska Public Media',
-			'Statewide - Print and Digital',
-			'Local News - Print and Digital',
+			'Statewide - Print and Digital Outlets',
+			'Local - Print and Digital Outlets',
 			'Journalists per County',
 		];
 		
@@ -415,7 +415,7 @@
 		
 		
 		// Local News popups
-		map.on('click', 'Local News - Print and Digital', function (e) {
+		map.on('click', 'Local - Print and Digital Outlets', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -447,7 +447,7 @@
 		});
 		
 		// Statewide orgs popups
-		map.on('click', 'Statewide - Print and Digital', function (e) {
+		map.on('click', 'Statewide - Print and Digital Outlets', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
