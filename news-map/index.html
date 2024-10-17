@@ -17,7 +17,7 @@
 	body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 	
-	.map-menu { background: #fff; position: absolute; z-index: 1; left: 10px; width: 150px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
+	.map-menu { background: #fff; position: absolute; z-index: 1; left: 10px; width: 175px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
 	
 	#menu-news { top: 60px; }
 	#menu-demographics { bottom: 10px; }
@@ -43,9 +43,9 @@
 	.mapboxgl-popup-content p { font-size: 13px; line-height: 1.5; margin: 0; }
 	.mapboxgl-popup-content p.small { font-size: 11px; color: #aaa; margin-bottom: 5px; }
 	.mapboxgl-popup-content h3 { margin: 0 0 5px 0; }
-	.mapboxgl-popup-content table { width: 100%; border-collapse: collapse; margin-top: 5px;  }
+	.mapboxgl-popup-content table { width: 100%; border-collapse: collapse; margin-top: 5px; color: #666; }
 	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; }
-	.mapboxgl-popup-content table td:first-child { color: #666; text-transform: uppercase; font-size: 11px; padding-right: 10px;}
+	.mapboxgl-popup-content table td:first-child { padding-right: 10px;}
 	.mapboxgl-popup-content table td:last-child { text-align: right; }
 	
 </style>
@@ -102,6 +102,7 @@
 	
 	map.on('load', function () {
 	
+
 		map.addSource('Demographics', {
 			type: 'geojson',
 			// Use a URL for the value for the `data` property.
@@ -228,11 +229,11 @@
 
 		// Enumerate ids of the layers.
 		const toggleableDataLayers = [
-			'Broadcast LNOs',
-			'NPM - Broadcast',
-			'Statewide News Orgs',
-			'LNOs - Print-Digital',
-			'Staffing - Counties',
+			'TV and Radio Stations',
+			'Nebraska Public Media',
+			'Statewide Organizations',
+			'Local News - Print and Digital',
+			'Journalists per County',
 		];
 		
 		const toggleableDemographicLayers = [
@@ -341,72 +342,82 @@
 	});
 		var currentPopup;
 		
-		// Broadcast LNO popups
-		map.on('click', 'Broadcast LNOs', function (e) {
+		// TV and Radio Stations popups
+		map.on('click', 'TV and Radio Stations', function (e) {
+			
+			console.log("You clicked on: ", e);
+			console.log("Features at this point: ", e.features.length, e.features);
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
 			}
-						
-			var coordinates = e.features[0].geometry.coordinates.slice();
-			var callsign = e.features[0].properties.callsign;
-			var freq = e.features[0].properties.frequency;
-			var service = e.features[0].properties.service;
-			var owner = e.features[0].properties.newsorg_ow;
-		
+			
 			currentPopup = new mapboxgl.Popup()
-				.setLngLat(e.lngLat)
-				.setHTML(
-					"<h3>" + callsign + "</h3>" +
-					"<p>Station Details</p>" +
-					"<table><tbody>" +
-					"<tr><td>Frequency</td><td>" + freq + " " + service + "</td><tr>" + 
-					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
-					"</tbody></table>")
-				.addTo(map);
+			.setLngLat(e.lngLat)
+						
+			let popupContent =  "<h3>Stations at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			
+			e.features.forEach((feature) => {
+				const props = feature.properties;
+				var callsign = props.callsign;
+				var freq = props.frequency;
+				var service = props.newsorg_am 
+				var owner = props.newsorg_ow;
+				popupContent += "<tr><td>" + callsign + "</td><td>" + freq + " " + service + "</td><tr>";
+			});
+			
+			popupContent += "</tbody></table>";
+			
+			currentPopup.setHTML(popupContent)
+			.addTo(map);
+
 		});
 		
 		
 		
-		// NPM Broadcast popups
-		map.on('click', 'NPM - Broadcast', function (e) {
+		// Nebaska Public Media popups
+		map.on('click', 'Nebraska Public Media', function (e) {
+			
+			console.log("You clicked on: ", e);
+			console.log("Features at this point: ", e.features.length, e.features);
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
 			}
 			
-			console.log("You clicked on: ", e);
-
-			
-			var coordinates = e.features[0].geometry.coordinates.slice();
-			var callsign = e.features[0].properties.callsign;
-			var freq = e.features[0].properties.frequency;
-			var service = e.features[0].properties.service;
-			var owner = e.features[0].properties.newsorg_ow;
-		
 			currentPopup = new mapboxgl.Popup()
-				.setLngLat(e.lngLat)
-				.setHTML(
-					"<h3>" + callsign + "</h3>" +
-					"<table><tbody>" +
-					"<tr><td>Frequency</td><td>" + freq + " " + service + "</td><tr>" + 
-					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
-					"</tbody></table>")
-				.addTo(map);
+			.setLngLat(e.lngLat)
+						
+			let popupContent =  "<h3>Stations at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			
+			e.features.forEach((feature) => {
+				const props = feature.properties;
+				var callsign = props.callsign;
+				var freq = props.frequency;
+				var service = props.newsorg_am 
+				var owner = props.newsorg_ow;
+				popupContent += "<tr><td>" + callsign + "</td><td>" + service + "</td><tr>";
+			});
+			
+			popupContent += "</tbody></table>";
+			
+			currentPopup.setHTML(popupContent)
+			.addTo(map);
+
 		});
 		
 		
 		// LNO Print or Digital popups
-		map.on('click', 'LNOs - Print-Digital', function (e) {
+		map.on('click', 'Local News - Print and Digital', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
 			}
 			
-			console.log("You clicked on: ", e.features[0])
+			console.log("Features at this location: ", e.features.length, e.features);
 			
 			var coordinates = e.features[0].geometry.coordinates.slice();
 			var name = e.features[0].properties.newsorg_na;
@@ -427,7 +438,7 @@
 		});
 		
 		// Statewide orgs popups
-		map.on('click', 'Statewide News Orgs', function (e) {
+		map.on('click', 'Statewide Organizations', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -554,6 +565,16 @@
 				.addTo(map);
 		});
 		
+	
+	// change the cursor to pointer when hovering over map features
+	map.on('mousemove', (e) => {
+		const features = map.queryRenderedFeatures(e.point);
+		if (features.length) {
+			map.getCanvas().style.cursor = 'pointer'; // Change cursor to pointer
+		} else {
+			map.getCanvas().style.cursor = ''; // Reset cursor when not hovering over any feature
+		}
+	});
 		
 </script>
 
