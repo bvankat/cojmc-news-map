@@ -17,10 +17,12 @@
 	body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 	
-	.map-menu { background: #fff; position: absolute; z-index: 1; left: 10px; width: 175px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
+	.map-menu { background: #fff; position: absolute; z-index: 1; left: 10px; width: 200px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); border-radius: 5px; }
 	
 	#menu-news { top: 60px; }
-	#menu-demographics { bottom: 10px; }
+	#menu-demographics { bottom: 40px;}
+	
+	#menu-demographics select { appearance: none; cursor: pointer; font-size: 12px; border: 1px solid #eee; padding: 5px; margin: 10px; border: 1px solid #eee;  }
 
 	.map-menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
 
@@ -55,8 +57,22 @@
 
 <body>
 
-	<nav id="menu-news" class="map-menu"><p>News Layers</nav>
-	<nav id="menu-demographics" class="map-menu"><p>Demographics</nav>
+	<nav id="menu-news" class="map-menu"><p>News Layers</p></nav>
+	<nav id="menu-demographics" class="map-menu"><p>Demographics</p>
+		<select id="layer-switcher">
+			<option value="" selected>Select a layer</option>
+			<option value="Race % - White">White %</option>
+			<option value="Race % - Hispanic">Hispanic %</option>
+			<option value="US Born">U.S. Born</option>
+			<option value="US Born">Veterans</option>
+			<option value="Own vs. Rent">Own vs. Rent</option>
+			<option value="Education">Education</option>
+			<option value="2020 Presidential">2020 Election</option>
+			<option value="Registered Voters">Registered Voters</option>
+			<option value="Broadband Counties">Broadband Access - County</option>
+			<option value="Broadband Cities">Broadband Access - Cities</option>
+		</select>
+	</nav>
 
 	<div id="map"></div>
 
@@ -136,7 +152,7 @@
 		});
 		
 		map.addLayer({
-			'id': 'Bachelors Degree',
+			'id': 'Education',
 			'type': 'fill',
 			'source': 'Demographics',
 			'layout': {
@@ -228,26 +244,13 @@
 		
 		
 
-		// Enumerate ids of the layers.
+		// Name the news layers.
 		const toggleableDataLayers = [
 			'TV and Radio Coverage',
 			'Nebraska Public Media',
 			'Statewide - Print and Digital Outlets',
 			'Local - Print and Digital Outlets',
 			'Journalists per County',
-		];
-		
-		const toggleableDemographicLayers = [
-			'Race % - White', 
-			'Race % - Hispanic', 
-			'Bachelors Degree', 
-			'US Born', 
-			'Veterans', 
-			'Own vs. Rent', 
-			'2020 Presidential', 
-			'Registered Voters', 
-			'Broadband Cities', 
-			'Broadband Counties', 
 		];
 
 		// Set up the toggles for each layer.
@@ -297,51 +300,39 @@
 			const layers = document.getElementById('menu-news');
 			layers.appendChild(link);
 		}
+		
+		// Name each of the Demographics layers
+		const DemographicLayers = [
+			'Race % - White', 
+			'Race % - Hispanic', 
+			'Education', 
+			'US Born', 
+			'Veterans', 
+			'Own vs. Rent', 
+			'2020 Presidential', 
+			'Registered Voters', 
+			'Broadband Cities', 
+			'Broadband Counties', 
+		];
+		
 
 
+		// Layer switcher for Demographics layers
+		const layerSwitcher = document.getElementById('layer-switcher');
+		layerSwitcher.addEventListener('change', function() {
 
-		for (const id of toggleableDemographicLayers) {
-			// Skip layers that already have a button set up.
-			if (document.getElementById(id)) {
-				continue;
+			for (const id of DemographicLayers) {
+				map.setLayoutProperty(id, 'visibility', 'none');
 			}
-
-			// Create a link.
-			const link = document.createElement('a');
-			link.id = id;
-			link.href = '#';
-			link.textContent = id;
-			link.className = '';
-
-			// Show or hide layer when the toggle is clicked.
-			link.onclick = function (e) {
-				const clickedLayer = this.textContent;
-				e.preventDefault();
-				e.stopPropagation();
 			
-				const visibility = map.getLayoutProperty(
-					clickedLayer,
-					'visibility'
-				);
+			// Show the selected layer
+			const selectedLayer = this.value;
 			
-				// Toggle layer visibility by changing the layout object's visibility property.
-				if (visibility === 'visible') {
-					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-					this.className = '';
-				} else {
-					this.className = 'active';
-					map.setLayoutProperty(
-						clickedLayer,
-						'visibility',
-						'visible'
-					);
-				}
-			
+			if(DemographicLayers.includes(selectedLayer)) {
+				map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
 			};
-
-			const layers = document.getElementById('menu-demographics');
-			layers.appendChild(link);
-		}
+			
+		});
 		
 		
 	});
@@ -511,7 +502,6 @@
 				currentPopup.remove();
 			}
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
 			var county = e.features[0].properties.NAME;
 			var trump = e.features[0].properties.Trump_PCT;
 			var biden = e.features[0].properties.Biden_PCT;
@@ -532,7 +522,6 @@
 				currentPopup.remove();
 			}
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
 			var county = e.features[0].properties.NAMELSAD;
 			var asian = e.features[0].properties.Asian;
 			var black = e.features[0].properties.Black;
@@ -558,7 +547,33 @@
 				currentPopup.remove();
 			}
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
+			var county = e.features[0].properties.NAMELSAD;
+			var asian = e.features[0].properties.Asian;
+			var black = e.features[0].properties.Black;
+			var hispanic = e.features[0].properties.Hispanic;
+			var white = e.features[0].properties.White;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>POPULATION BY RACE</p>" +
+					"<p>Asian: " + asian + "%</p>" +
+					"<p>Black: " + black + "%</p>" + 
+					"<p>Hispanic: " + hispanic + "%</p>" +
+					"<p>White: " + white + "%</p>")
+				.addTo(map);
+		});
+		
+		
+		// Demographics - Education
+		map.on('click', 'Education', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
 			var county = e.features[0].properties.NAMELSAD;
 			var asian = e.features[0].properties.Asian;
 			var black = e.features[0].properties.Black;
