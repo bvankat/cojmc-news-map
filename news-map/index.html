@@ -28,10 +28,10 @@
 
 	.map-menu a:hover { background-color: #f8f8f8; color: #404040; }
 
-	.map-menu a.active { background-color: #3887be; color: #ffffff; }
+	.map-menu a.active { background-color: #404040; color: #ffffff; }
 	
-	.map-menu p { padding: 10px; margin: 0; font-size: 13px; background: #eee; font-weight: bold; }
 	.map-menu p { padding: 10px; margin: 0; font-size: 13px; background: #d00000; color: #fff; font-weight: bold; }
+	#menu-demographics p { background: #eee; color: #000; font-weight: bold; }
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 		
@@ -39,6 +39,7 @@
 	
 	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
 	
+	.mapboxgl-popup { max-width: 320px; }
 	.mapboxgl-popup-content { font-family: system-ui, sans-serif; padding: 15px; border-radius: 8px; }
 	.mapboxgl-popup-content p { font-size: 13px; line-height: 1.5; margin: 0; }
 	.mapboxgl-popup-content p.small { font-size: 11px; color: #aaa; margin-bottom: 5px; }
@@ -261,7 +262,11 @@
 			link.id = id;
 			link.href = '#';
 			link.textContent = id;
-			link.className = '';
+			if (link.id==="Journalists per County") {
+				link.className = 'active';
+			} else {
+				link.className = '';
+			};
 
 			// Show or hide layer when the toggle is clicked.
 			link.onclick = function (e) {
@@ -409,7 +414,7 @@
 		});
 		
 		
-		// LNO Print or Digital popups
+		// Local News popups
 		map.on('click', 'Local News - Print and Digital', function (e) {
 			
 			// Close the current popup if it exists
@@ -419,48 +424,79 @@
 			
 			console.log("Features at this location: ", e.features.length, e.features);
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
-			var name = e.features[0].properties.newsorg_na;
-			var county = e.features[0].properties.newsorg_co;
-			var city = e.features[0].properties.City
-			var owner = e.features[0].properties.newsorg_ow;
-		
 			currentPopup = new mapboxgl.Popup()
-				.setLngLat(e.lngLat)
-				.setHTML(
-					"<h3>" + name + "</h3>" +
-					"<table><tbody>" +
-					"<tr><td>City</td><td>" + city + "</td><tr>" + 
-					"<tr><td>County</td><td>" + county + "</td><tr>" + 
-					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
-					"</tbody></table>")
-				.addTo(map);
+			.setLngLat(e.lngLat)
+						
+			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			
+			e.features.forEach((feature) => {
+				const props = feature.properties;
+				var name = props.newsorg_na;
+				var county = props.newsorg_co;
+				var city = props.City
+				var owner = e.features[0].properties.newsorg_ow;
+								
+				popupContent += "<tr><td>" + name + "</td><td>" + owner + "</td><tr>";
+			});
+			
+			popupContent += "</tbody></table>";
+			
+			currentPopup.setHTML(popupContent)
+			.addTo(map);
 		});
 		
 		// Statewide orgs popups
-		map.on('click', 'Statewide Organizations', function (e) {
+		map.on('click', 'Statewide - Print and Digital', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
 			}
 			
-			console.log("You clicked on: ", e.features[0])
+			console.log("Features at this location: ", e.features.length, e.features);
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
-			var name = e.features[0].properties.newsorg_name;
-			var county = e.features[0].properties.newsorg_county;
-			var city = e.features[0].properties.City
-			var owner = e.features[0].properties.newsorg_owner;
+			currentPopup = new mapboxgl.Popup()
+			.setLngLat(e.lngLat)
+						
+			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><tbody>";
+			
+			e.features.forEach((feature) => {
+				const props = feature.properties;
+				var name = props.newsorg_name;
+				var county = props.newsorg_county;
+				var city = props.newsorg_muni;
+				var owner = e.features[0].properties.newsorg_owner;
+								
+				popupContent += "<tr><td>" + name + "</td><td>" + owner + "</td><tr>";
+			});
+			
+			popupContent += "</tbody></table>";
+			
+			currentPopup.setHTML(popupContent)
+			.addTo(map);
+			
+		});
 		
+		
+		// Journalists per County popups
+		map.on('click', 'Journalists per County', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.NAMELSAD;
+			var fulltime = e.features[0].properties.COUNTY_FT;
+			var parttime = e.features[0].properties.COUNTY_PT;
+			
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
 				.setHTML(
-					"<h3>" + name + "</h3>" +
+					"<h3>Journalists in " + county + "</h3>" +
 					"<table><tbody>" +
-					"<tr><td>City</td><td>" + city + "</td><tr>" + 
-					"<tr><td>County</td><td>" + county + "</td><tr>" + 
-					"<tr><td>Owner</td><td>" + owner + "</td><tr>" + 
+					"<tr><td>Full-time</td><td>" + fulltime + "</td></tr>" +
+					"<tr><td>Part-time</td><td>" + parttime + "</td></tr>" +
 					"</tbody></table>")
 				.addTo(map);
 		});
