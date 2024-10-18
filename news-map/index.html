@@ -137,7 +137,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'White'], // Feature property to base the colors on
+					0, '#ffffd4',  
+					20, '#fee391',
+					40, '#fec44f',
+					60, '#fe9929',
+					80, '#d95f0e',  
+					100, '#993404'   
+				]
 		  	}
 		});
 		
@@ -149,7 +160,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'Hispanic'], // Feature property to base the colors on
+					0, '#ffffd4',  
+					10, '#fee391',
+					20, '#fec44f',
+					30, '#fe9929',
+					40, '#d95f0e',  
+					50, '#993404'   
+				]
 		  	}
 		});
 		
@@ -161,7 +183,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'Bach'], // Feature property to base the colors on
+					5, '#ffffd4',  
+					10, '#fee391',
+					15, '#fec44f',
+					20, '#fe9929',
+					25, '#d95f0e',  
+					30, '#993404'   
+				]
 		  	}
 		});
 		
@@ -173,7 +206,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'USb'], // Feature property to base the colors on
+					0, '#ffffd4',  
+					20, '#fee391',
+					40, '#fec44f',
+					60, '#fe9929',
+					80, '#d95f0e',  
+					100, '#993404'   
+				]
 		  	}
 		});
 		
@@ -185,7 +229,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'Veteran'], // Feature property to base the colors on
+					0, '#ffffd4',  
+					10, '#fee391',
+					20, '#fec44f',
+					30, '#fe9929',
+					40, '#d95f0e',  
+					50, '#993404'   
+				]
 		  	}
 		});
 		
@@ -197,7 +252,18 @@
 				'visibility': 'none'
 			},
 			'paint': {
-				'fill-opacity': 0.6
+				'fill-opacity': 0.6,
+				'fill-color': [
+					'interpolate',
+					['linear'],
+					['get', 'Owneroccupied'], // Feature property to base the colors on
+					0, '#ffffd4',  
+					20, '#fee391',
+					40, '#fec44f',
+					60, '#fe9929',
+					80, '#d95f0e',  
+					100, '#993404'   
+				]
 		  	}
 		});
 		
@@ -240,6 +306,52 @@
 			]
 		]);
 		
+		// Set up the choropleth color scale for 'Registered Voters' based on the highest registrations
+		map.setPaintProperty('Registered Voters', 'fill-color', [
+			'interpolate',
+			['linear'],
+			['abs', ['-', ['get', 'RPCT'], ['get', 'DPCT']]],
+			// Define breakpoints for margin values and corresponding colors
+			0, [
+				'case',
+				['>', ['get', 'RPCT'], ['get', 'DPCT']], 
+				'#FFBFBF', // Light red for R with small margin
+				'#BFBFFF'  // Light blue for D with small margin
+			],
+			25, [
+				'case',
+				['>', ['get', 'RPCT'], ['get', 'DPCT']], 
+				'#FF8080', // Darker red for R
+				'#8080FF'  // Darker blue for D
+			],
+			50, [
+				'case',
+				['>', ['get', 'RPCT'], ['get', 'DPCT']], 
+				'#FF4040', // Even darker red for R
+				'#4040FF'  // Even darker blue for D
+			],
+			75, [
+				'case',
+				['>', ['get', 'RPCT'], ['get', 'DPCT']], 
+				'#FF0000', // Darkest red for R
+				'#0000FF'  // Darkest blue for D
+			]
+		]);
+		
+		// Set up the choropleth color scale for 'Brodband Cities' based on the pct_served (which is a decimal in this case)
+		map.setPaintProperty('Broadband Cities', 'fill-color', [
+			'interpolate',
+			['linear'],
+			['get', 'pct_served'], // Feature property to base the colors on
+			0, '#ffffd4',  
+			0.2, '#fee391',
+			0.4, '#fec44f',
+			0.6, '#fe9929',
+			0.8, '#d95f0e',  
+			1, '#993404'   
+		]);
+		
+		
 		// Optionally adjust the opacity if needed
 		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
 		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.6);
@@ -275,6 +387,7 @@
 
 			// Show or hide layer when the toggle is clicked.
 			link.onclick = function (e) {
+				
 				const clickedLayer = this.textContent;
 				e.preventDefault();
 				e.stopPropagation();
