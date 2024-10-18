@@ -22,7 +22,7 @@
 	#menu-news { top: 60px; }
 	#menu-demographics { bottom: 40px;}
 	
-	#menu-demographics select { appearance: none; cursor: pointer; font-size: 12px; border: 1px solid #eee; padding: 5px; margin: 10px; border: 1px solid #eee;  }
+	#menu-demographics select { appearance: none; cursor: pointer; font-size: 12px; border: 1px solid #eee; padding: 5px; margin: 10px; border: 1px solid #eee; }
 
 	.map-menu a { font-size: 13px; color: #404040; display: block; margin: 0; padding: 10px; text-decoration: none; border-bottom: 1px solid rgba(0, 0, 0, 0.25); text-align: left; }
 
@@ -48,8 +48,10 @@
 	.mapboxgl-popup-content h3 { margin: 0 0 5px 0; }
 	.mapboxgl-popup-content table { width: 100%; border-collapse: collapse; margin-top: 5px; color: #666; }
 	.mapboxgl-popup-content table th { text-transform: uppercase; font-size: 90%; text-align: left; padding: 3px 0; border-bottom: 1px solid #ccc; font-weight: normal; color: #999; }
-	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; font-weight: 400; line-height: 1.3; }
-	.mapboxgl-popup-content table td:first-child { padding-right: 10px; font-weight: 600; }
+	.mapboxgl-popup-content table td { vertical-align: top; padding: 5px 0; border-bottom: 1px solid #eee; font-weight: 400; line-height: 1.3; padding-right: 10px; }
+	.mapboxgl-popup-content table td:first-child { font-weight: 600; }
+	.mapboxgl-popup-content table td:last-child { padding-right: 0; }
+	.mapboxgl-popup-content table.numbers td:last-child { text-align: right; }
 	
 </style>
 
@@ -57,20 +59,20 @@
 
 <body>
 
-	<nav id="menu-news" class="map-menu"><p>News Layers</p></nav>
-	<nav id="menu-demographics" class="map-menu"><p>Demographics</p>
+	<nav id="menu-news" class="map-menu"><p>NEWS LAYERS</p></nav>
+	<nav id="menu-demographics" class="map-menu"><p>DEMOGRAPHICS</p>
 		<select id="layer-switcher">
 			<option value="" selected>Select a layer</option>
 			<option value="Race % - White">White %</option>
 			<option value="Race % - Hispanic">Hispanic %</option>
-			<option value="US Born">U.S. Born</option>
-			<option value="US Born">Veterans</option>
-			<option value="Own vs. Rent">Own vs. Rent</option>
+			<option value="US Born">U.S. Citizenship</option>
+			<option value="Veterans">Veterans</option>
+			<option value="Own vs. Rent">Home Ownership</option>
 			<option value="Education">Education</option>
 			<option value="2020 Presidential">2020 Election</option>
 			<option value="Registered Voters">Registered Voters</option>
-			<option value="Broadband Counties">Broadband Access - County</option>
-			<option value="Broadband Cities">Broadband Access - Cities</option>
+			<option value="Broadband Counties">Broadband - Counties</option>
+			<option value="Broadband Cities">Broadband - Cities</option>
 		</select>
 	</nav>
 
@@ -206,7 +208,7 @@
 	// After the last frame rendered before the map enters an "idle" state.
 	map.on('idle', () => {
 		
-		// Set up the choropleth color scale based on the margin of victory
+		// Set up the choropleth color scale for '2020 Presidential' based on the margin of victory
 		map.setPaintProperty('2020 Presidential', 'fill-color', [
 			'interpolate',
 			['linear'],
@@ -239,8 +241,8 @@
 		]);
 		
 		// Optionally adjust the opacity if needed
-		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.3);
-		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.3);
+		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
+		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.6);
 		
 		
 
@@ -503,18 +505,26 @@
 			}
 			
 			var county = e.features[0].properties.NAME;
+			var trumpVotes = e.features[0].properties["2020-Trump"];
 			var trump = e.features[0].properties.Trump_PCT;
+			var bidenVotes = e.features[0].properties["2020-Biden"];
 			var biden = e.features[0].properties.Biden_PCT;
-			var margin = Math.abs(trump - biden).toFixed(2); // Rounded to 2 decimal places
+			var margin = Math.abs(trump - biden).toFixed(1); // Rounded to 1 decimal places
 			var winner = trump > biden ? 'Trump' : 'Biden'; // Determine the winner
 		
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
-				.setHTML("<p><strong>" + county + " County</strong></p><p>2020 result: " + winner + " +" + margin + "%</p")
+				.setHTML(
+					"<h3>" + county + " County</h3>" +
+					"<p class='small'>2020 Election Result: " + winner + " +" + margin + "%</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Trump</td><td> " + trumpVotes.toLocaleString() + "</td></tr>" +
+					"<tr><td>Biden</td><td>" + bidenVotes.toLocaleString() + "</td></tr>" + 
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
-		// Demographics layer popups
+		// Demographics - White popups
 		map.on('click', 'Race % - White', function (e) {
 			
 			// Close the current popup if it exists
@@ -533,13 +543,17 @@
 				.setHTML(
 					"<h3>" + county + "</h3>" +
 					"<p class='small'>POPULATION BY RACE</p>" +
-					"<p>Asian: " + asian + "%</p>" +
-					"<p>Black: " + black + "%</p>" + 
-					"<p>Hispanic: " + hispanic + "%</p>" +
-					"<p>White: " + white + "%</p>")
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Asian</td><td> " + asian.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Black</td><td>" + black.toFixed(1) + "%</td></tr>" + 
+					"<tr><td>Hispanic</td><td>" + hispanic.toFixed(1) + "%</td></tr>" +
+					"<tr><td>White</td><td>" + white.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
+		
+		// Demographics - Hispanic popups
 		map.on('click', 'Race % - Hispanic', function (e) {
 			
 			// Close the current popup if it exists
@@ -558,10 +572,12 @@
 				.setHTML(
 					"<h3>" + county + "</h3>" +
 					"<p class='small'>POPULATION BY RACE</p>" +
-					"<p>Asian: " + asian + "%</p>" +
-					"<p>Black: " + black + "%</p>" + 
-					"<p>Hispanic: " + hispanic + "%</p>" +
-					"<p>White: " + white + "%</p>")
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Asian</td><td> " + asian.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Black</td><td>" + black.toFixed(1) + "%</td></tr>" + 
+					"<tr><td>Hispanic</td><td>" + hispanic.toFixed(1) + "%</td></tr>" +
+					"<tr><td>White</td><td>" + white.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
@@ -575,47 +591,177 @@
 			}
 			
 			var county = e.features[0].properties.NAMELSAD;
-			var asian = e.features[0].properties.Asian;
-			var black = e.features[0].properties.Black;
-			var hispanic = e.features[0].properties.Hispanic;
-			var white = e.features[0].properties.White;
+			var noEdu = e.features[0].properties.NoEdu;
+			var hsDip = e.features[0].properties.HSdip;
+			var bach = e.features[0].properties.Bach;
+			var masters = e.features[0].properties.Masters;
+			var phd = e.features[0].properties.Phd;
 			
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
 				.setHTML(
 					"<h3>" + county + "</h3>" +
-					"<p class='small'>POPULATION BY RACE</p>" +
-					"<p>Asian: " + asian + "%</p>" +
-					"<p>Black: " + black + "%</p>" + 
-					"<p>Hispanic: " + hispanic + "%</p>" +
-					"<p>White: " + white + "%</p>")
+					"<p class='small'>Highest education level obtained</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>No education</td><td>" + noEdu.toFixed(1) + "%</td></tr>" +
+					"<tr><td>HS diploma</td><td>" + hsDip.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Bachelor</td><td>" + bach.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Masters</td><td>" + masters.toFixed(1) + "%</td></tr>" +
+					"<tr><td>PhD</td><td>" + phd.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
 				.addTo(map);
 		});
 		
-		// County staffing popups
-		map.on('click', 'Staffing - Counties', function (e) {
+		
+		// Demographics - US Born
+		map.on('click', 'US Born', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
 			}
 			
-			var coordinates = e.features[0].geometry.coordinates.slice();
 			var county = e.features[0].properties.NAMELSAD;
-			var county_ft = e.features[0].properties.COUNTY_FT;
-			var county_pt = e.features[0].properties.COUNTY_PT;
+			var usBorn = e.features[0].properties.USb;
+			var naturalized = e.features[0].properties.Naturalized;
+			var notCitizen = e.features[0].properties.Notcitizen;
 			
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
 				.setHTML(
 					"<h3>" + county + "</h3>" +
-					"<p>Journalists working in the county</p>" +
-					"<table><tbody>" +
-					"<tr><td>Full-time</td><td>" + county_ft + "</td><tr>" + 
-					"<tr><td>Part-time</td><td>" + county_pt + "</td><tr>" + 
+					"<table class='numbers'><tbody>" +
+					"<tr><td>U.S. Born</td><td>" + usBorn.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Naturalized</td><td>" + naturalized.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Non-citizen</td><td>" + notCitizen.toFixed(1) + "%</td></tr>" +
 					"</tbody></table>")
 				.addTo(map);
 		});
+		
+		// Demographics - Veterans
+		map.on('click', 'Veterans', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.NAMELSAD;
+			var veteran = e.features[0].properties.Veteran;
+			var notVeteran = e.features[0].properties.Nonvet;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Veterans</td><td>" + veteran.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Non-veterans</td><td>" + notVeteran.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		// Demographics - Home ownership
+		map.on('click', 'Own vs. Rent', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.NAMELSAD;
+			var own = e.features[0].properties.Owneroccupied;
+			var rent = e.features[0].properties.Renteroccupied;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>Total households</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Owner-occupied</td><td>" + own.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Renter-occupied</td><td>" + rent.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		// Registered Voters
+		map.on('click', 'Registered Voters', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.NAMELSAD;
+			var voters = e.features[0].properties["Grand Total"];
+			var republican = e.features[0].properties.Republican;
+			var rPct = e.features[0].properties.RPCT;
+			var democrat = e.features[0].properties.Democratic;
+			var dPct = e.features[0].properties.DPCT;
+			var nonpartisan = e.features[0].properties.Nonpartisan;
+			var nPct = e.features[0].properties.NPCT;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>Registered Voters: " + voters.toLocaleString() + "</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Republican</td><td>" + republican.toLocaleString() + "</td><td>" + rPct.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Democrat</td><td>" + democrat.toLocaleString() + "</td><td>" + dPct.toFixed(1) + "%</td></tr>" +
+					"<tr><td>Nonpartisan</td><td>" + nonpartisan.toLocaleString() + "</td><td>" + nPct.toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		
+		//  Broadband Counties
+		map.on('click', 'Broadband Counties', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.county_nam;
+			var broadbandPct = e.features[0].properties.pct_served;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + county + "</h3>" +
+					"<p class='small'>Percentage of households in county</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+		
+		//  Broadband Cities
+		map.on('click', 'Broadband Cities', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var city = e.features[0].properties.city;
+			var broadbandPct = e.features[0].properties.pct_served;
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>" + city + "</h3>" +
+					"<p class='small'>Percentage of households in metro area</p>" +
+					"<table class='numbers'><tbody>" +
+					"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+		
+	
 		
 	
 	// change the cursor to pointer when hovering over map features
