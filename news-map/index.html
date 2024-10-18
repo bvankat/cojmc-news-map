@@ -289,12 +289,21 @@
 					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
 					this.className = '';
 				} else {
-					this.className = 'active';
-					map.setLayoutProperty(
-						clickedLayer,
-						'visibility',
-						'visible'
-					);
+					if(this.className === 'active') {
+						this.className='';
+						map.setLayoutProperty(
+							clickedLayer,
+							'visibility',
+							'none'
+						);
+					} else {
+						this.className = 'active';
+						map.setLayoutProperty(
+							clickedLayer,
+							'visibility',
+							'visible'
+						);
+					}
 				}
 			
 			};
