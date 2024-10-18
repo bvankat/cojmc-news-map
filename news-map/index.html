@@ -284,19 +284,19 @@
 					'visibility'
 				);
 			
-				// Toggle layer visibility by changing the layout object's visibility property.
-				if (visibility === 'visible') {
+				// Toggle layer visibility by changing the layout object's visibility property when clicked.
+				if (visibility === 'visible') { // if already visible, turn it off
 					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
 					this.className = '';
-				} else {
-					if(this.className === 'active') {
+				} else { // If visibility is 'none' -- All non-default layers
+					if(this.className === 'active') { // if the link is already marked active (default layer only)
 						this.className='';
 						map.setLayoutProperty(
 							clickedLayer,
 							'visibility',
 							'none'
 						);
-					} else {
+					} else { // if layer isn't visible, activate it when clicked
 						this.className = 'active';
 						map.setLayoutProperty(
 							clickedLayer,
