@@ -33,7 +33,7 @@
 	.map-menu a.active { background-color: #404040; color: #ffffff; }
 	
 	.map-menu p { padding: 10px; margin: 0; font-size: 13px; background: #d00000; color: #fff; font-weight: bold; }
-	#menu-demographics p { background: #eee; color: #000; font-weight: bold; }
+	#menu-demographics p { background: #404040; color: #fff; font-weight: bold; }
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 		
@@ -59,11 +59,13 @@
 
 <body>
 
-	<nav id="menu-news" class="map-menu"><p>NEWS LAYERS</p></nav>
+	<nav id="menu-news" class="map-menu"><p>NEWS OUTLETS</p></nav>
 	
-	<nav id="menu-demographics" class="map-menu"><p>DEMOGRAPHICS</p>
+	<nav id="menu-demographics" class="map-menu"><p>DATA LAYERS</p>
 		<select id="layer-switcher">
-			<option value="" selected>Select a layer</option>
+			<option value="">Select a layer</option>
+			<option value="Journalists per County" selected>Journalists per County</option>
+			<option value="Outlets per County">News Outlets per County</option>
 			<option value="Race % - White">White %</option>
 			<option value="Race % - Hispanic">Hispanic %</option>
 			<option value="US Born">U.S. Citizenship</option>
@@ -361,12 +363,24 @@
 
 		// Name the news layers.
 		const toggleableDataLayers = [
-			'News Outlets',
+			'Local and Statewide Outlets',
 			'TV and Radio Coverage',
-			'Nebraska Public Media',
-			'Journalists per County',
-			'Outlets per County'
+			'Nebraska Public Media'
 		];
+		
+
+
+		// Function to toggle visibility
+		function toggleLayerVisibility(layerToShow) {
+		  countyLayers.forEach(layer => {
+			map.setLayoutProperty(
+			  layer,
+			  'visibility',
+			  layer === layerToShow ? 'visible' : 'none'
+			);
+		  });
+		}
+
 
 		// Set up the toggles for each layer.
 		for (const id of toggleableDataLayers) {
@@ -380,10 +394,9 @@
 			link.id = id;
 			link.href = '#';
 			link.textContent = id;
-			if (link.id==="Journalists per County") {
-				link.className = 'active';
-			} else if (link.id==="News Outlets") {
-				link.className = 'active';
+			
+			if (link.id==="Local and Statewide Outlets") {
+			link.className = 'active';
 			} else {
 				link.className = '';
 			};
@@ -428,8 +441,10 @@
 			layers.appendChild(link);
 		}
 		
-		// Name each of the Demographics layers
+		// Name each of the Data layers
 		const DemographicLayers = [
+			'Journalists per County', 
+			'Outlets per County', 
 			'Race % - White', 
 			'Race % - Hispanic', 
 			'Education', 
@@ -533,7 +548,7 @@
 		
 		
 		// News Outlets popups
-		map.on('click', 'News Outlets', function (e) {
+		map.on('click', 'Local and Statewide Outlets', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -595,18 +610,43 @@
 			}
 			
 			var county = e.features[0].properties.NAMELSAD;
-			var news_outlets = e.features[0].properties["Total LNOs"];
+			var local_outlets = e.features[0].properties["Total LNOs"];
 			var outlet_names = e.features[0].properties["LNO names"];
 			
+			if ( local_outlets == '' ){
+				var outlet_names = "None";
+			};
+			
+			var statewide_outlets = e.features[0].properties["Statewide news organizations"];
+			
+			if( statewide_outlets ) {
+				const statewide_list = statewide_outlets.split(',');
+				const statewide_count = statewide_list.length;
+				
+				currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>News Outlets in " + county + "</h3>" +
+					"<table><tbody>" +
+					"<tr><td>Local</td><td>" + local_outlets + "</td></tr>" +
+					"<tr><td>Statewide</td><td>" + statewide_count + "</td></tr>" +
+					"<tr><td colspan=2 style='font-weight: normal !important'>Local outlets: " + outlet_names + "</td></tr>" +
+					"<tr><td colspan=2 style='font-weight: normal !important'>Statewide outlets: " + statewide_list + "</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+			} else {
+			
+
 			currentPopup = new mapboxgl.Popup()
 				.setLngLat(e.lngLat)
 				.setHTML(
 					"<h3>News Outlets in " + county + "</h3>" +
 					"<table><tbody>" +
-					"<tr><td>Local outlets</td><td>" + news_outlets + "</td></tr>" +
-					"<tr><td colspan=2>" + outlet_names + "</td></tr>" +
-					"</tbody></table>")
+					"<tr><td>Local</td><td>" + local_outlets + "</td></tr></tbody></table>" +
+					"<p style='margin-top: 5px; font-size: 12px; color #666'>Outlets: " + outlet_names + "</p>")
 				.addTo(map);
+				
+			}
 		});
 		
 		
