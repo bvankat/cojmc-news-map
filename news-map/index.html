@@ -60,6 +60,7 @@
 <body>
 
 	<nav id="menu-news" class="map-menu"><p>NEWS LAYERS</p></nav>
+	
 	<nav id="menu-demographics" class="map-menu"><p>DEMOGRAPHICS</p>
 		<select id="layer-switcher">
 			<option value="" selected>Select a layer</option>
@@ -360,11 +361,11 @@
 
 		// Name the news layers.
 		const toggleableDataLayers = [
+			'News Outlets',
 			'TV and Radio Coverage',
 			'Nebraska Public Media',
-			'Statewide - Print and Digital Outlets',
-			'Local - Print and Digital Outlets',
 			'Journalists per County',
+			'Outlets per County'
 		];
 
 		// Set up the toggles for each layer.
@@ -380,6 +381,8 @@
 			link.href = '#';
 			link.textContent = id;
 			if (link.id==="Journalists per County") {
+				link.className = 'active';
+			} else if (link.id==="News Outlets") {
 				link.className = 'active';
 			} else {
 				link.className = '';
@@ -529,8 +532,8 @@
 		});
 		
 		
-		// Local News popups
-		map.on('click', 'Local - Print and Digital Outlets', function (e) {
+		// News Outlets popups
+		map.on('click', 'News Outlets', function (e) {
 			
 			// Close the current popup if it exists
 			if (currentPopup) {
@@ -548,8 +551,6 @@
 			e.features.forEach((feature) => {
 				const props = feature.properties;
 				var name = props.newsorg_na;
-				var county = props.newsorg_co;
-				var city = props.City
 				var owner = e.features[0].properties.newsorg_ow;
 								
 				popupContent += "<tr><td>" + name + "</td><td>" + owner + "</td><tr>";
@@ -559,38 +560,6 @@
 			
 			currentPopup.setHTML(popupContent)
 			.addTo(map);
-		});
-		
-		// Statewide orgs popups
-		map.on('click', 'Statewide - Print and Digital Outlets', function (e) {
-			
-			// Close the current popup if it exists
-			if (currentPopup) {
-				currentPopup.remove();
-			}
-			
-			console.log("Features at this location: ", e.features.length, e.features);
-			
-			currentPopup = new mapboxgl.Popup()
-			.setLngLat(e.lngLat)
-						
-			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + "<table><thead><th>Name</th><th>Owner</th></thead><tbody>";
-			
-			e.features.forEach((feature) => {
-				const props = feature.properties;
-				var name = props.newsorg_name;
-				var county = props.newsorg_county;
-				var city = props.newsorg_muni;
-				var owner = e.features[0].properties.newsorg_owner;
-								
-				popupContent += "<tr><td>" + name + "</td><td>" + owner + "</td><tr>";
-			});
-			
-			popupContent += "</tbody></table>";
-			
-			currentPopup.setHTML(popupContent)
-			.addTo(map);
-			
 		});
 		
 		
@@ -613,6 +582,29 @@
 					"<table><tbody>" +
 					"<tr><td>Full-time</td><td>" + fulltime + "</td></tr>" +
 					"<tr><td>Part-time</td><td>" + parttime + "</td></tr>" +
+					"</tbody></table>")
+				.addTo(map);
+		});
+
+		// Outlets per County popups
+		map.on('click', 'Outlets per County', function (e) {
+			
+			// Close the current popup if it exists
+			if (currentPopup) {
+				currentPopup.remove();
+			}
+			
+			var county = e.features[0].properties.NAMELSAD;
+			var news_outlets = e.features[0].properties["Total LNOs"];
+			var outlet_names = e.features[0].properties["LNO names"];
+			
+			currentPopup = new mapboxgl.Popup()
+				.setLngLat(e.lngLat)
+				.setHTML(
+					"<h3>News Outlets in " + county + "</h3>" +
+					"<table><tbody>" +
+					"<tr><td>Local outlets</td><td>" + news_outlets + "</td></tr>" +
+					"<tr><td colspan=2>" + outlet_names + "</td></tr>" +
 					"</tbody></table>")
 				.addTo(map);
 		});
