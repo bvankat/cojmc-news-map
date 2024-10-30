@@ -154,7 +154,7 @@
 					100, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
 		map.addLayer({
 			'id': 'Race % - Hispanic',
@@ -178,7 +178,7 @@
 					50, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
 		map.addLayer({
 			'id': 'Education',
@@ -202,7 +202,7 @@
 					30, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
 		map.addLayer({
 			'id': 'US Born',
@@ -226,7 +226,7 @@
 					100, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
 		map.addLayer({
 			'id': 'Veterans',
@@ -250,7 +250,7 @@
 					50, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
 		map.addLayer({
 			'id': 'Own vs. Rent',
@@ -274,8 +274,11 @@
 					100, '#993404'   
 				]
 		  	}
-		}, 'Broadband Cities'); // puts layer below Studio layer called 'Broadband Cities'
+		}); 
 		
+		// Move layer to top
+		map.moveLayer('Local and Statewide Outlets', 'Journalists per County');
+			
 		const mapLayers = map.getStyle().layers;
 		console.log('Layers loaded: ', mapLayers);
 	});
@@ -365,7 +368,38 @@
 		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
 		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.6);
 		
+		// Name each of the Data layers
+		const DemographicLayers = [
+			'Journalists per County', 
+			'Outlets per County', 
+			'Race % - White', 
+			'Race % - Hispanic', 
+			'Education', 
+			'US Born', 
+			'Veterans', 
+			'Own vs. Rent', 
+			'2020 Presidential', 
+			'Registered Voters', 
+			'Broadband Cities', 
+			'Broadband Counties'
+		];
 		
+		// Layer switcher for Demographics layers
+		const layerSwitcher = document.getElementById('layer-switcher');
+		layerSwitcher.addEventListener('change', function() {
+		
+			for (const id of DemographicLayers) {
+				map.setLayoutProperty(id, 'visibility', 'none');
+			}
+			
+			// Show the selected layer
+			const selectedLayer = this.value;
+			
+			if(DemographicLayers.includes(selectedLayer)) {
+				map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
+			};
+			
+		});
 
 		// Name the news layers.
 		const toggleableDataLayers = [
@@ -374,19 +408,6 @@
 			'Nebraska Public Media'
 		];
 		
-
-
-		// Function to toggle visibility
-		function toggleLayerVisibility(layerToShow) {
-		  countyLayers.forEach(layer => {
-			map.setLayoutProperty(
-			  layer,
-			  'visibility',
-			  layer === layerToShow ? 'visible' : 'none'
-			);
-		  });
-		}
-
 
 		// Set up the toggles for each layer.
 		for (const id of toggleableDataLayers) {
@@ -401,7 +422,7 @@
 			link.href = '#';
 			link.textContent = id;
 			
-			if (link.id==="Local and Statewide Outlets") {
+			if (link.id=="Local and Statewide Outlets") {
 			link.className = 'active';
 			} else {
 				link.className = '';
@@ -413,6 +434,8 @@
 				const clickedLayer = this.textContent;
 				e.preventDefault();
 				e.stopPropagation();
+				
+				console.log("Layer clicked: ", clickedLayer);
 			
 				const visibility = map.getLayoutProperty(
 					clickedLayer,
@@ -446,41 +469,6 @@
 			const layers = document.getElementById('menu-news');
 			layers.appendChild(link);
 		}
-		
-		// Name each of the Data layers
-		const DemographicLayers = [
-			'Journalists per County', 
-			'Outlets per County', 
-			'Race % - White', 
-			'Race % - Hispanic', 
-			'Education', 
-			'US Born', 
-			'Veterans', 
-			'Own vs. Rent', 
-			'2020 Presidential', 
-			'Registered Voters', 
-			'Broadband Cities', 
-			'Broadband Counties', 
-		];
-		
-
-
-		// Layer switcher for Demographics layers
-		const layerSwitcher = document.getElementById('layer-switcher');
-		layerSwitcher.addEventListener('change', function() {
-
-			for (const id of DemographicLayers) {
-				map.setLayoutProperty(id, 'visibility', 'none');
-			}
-			
-			// Show the selected layer
-			const selectedLayer = this.value;
-			
-			if(DemographicLayers.includes(selectedLayer)) {
-				map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
-			};
-			
-		});
 		
 		
 	});
@@ -559,12 +547,11 @@
 			// Close the current popup if it exists
 			if (currentPopup) {
 				currentPopup.remove();
-			}
+			};
 			
-			console.log("Features at this location: ", e.features.length, e.features);
+			console.log("Outlets at this location: ", e.features.length, e.features);
 			
-			currentPopup = new mapboxgl.Popup()
-			.setLngLat(e.lngLat)
+			currentPopup = new mapboxgl.Popup().setLngLat(e.lngLat);
 						
 			let popupContent =  "<h3>Outlets at this location: " + e.features.length + "</h3>" + 
 			"<table><thead><th>Name</th><th>Owner</th></thead><tbody>";
@@ -572,15 +559,15 @@
 			e.features.forEach((feature) => {
 				const props = feature.properties;
 				var name = props.newsorg_na;
-				var owner = e.features[0].properties.newsorg_ow;
+				var owner = props.newsorg_ow;
 								
 				popupContent += "<tr><td>" + name + "</td><td>" + owner + "</td><tr>";
 			});
 			
 			popupContent += "</tbody></table>";
 			
-			currentPopup.setHTML(popupContent)
-			.addTo(map);
+			currentPopup.setHTML(popupContent).addTo(map);
+						
 		});
 		
 		
@@ -591,7 +578,7 @@
 			if (currentPopup) {
 				currentPopup.remove();
 			}
-			
+						
 			var county = e.features[0].properties.NAMELSAD;
 			var fulltime = e.features[0].properties.COUNTY_FT;
 			var parttime = e.features[0].properties.COUNTY_PT;
