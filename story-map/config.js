@@ -126,7 +126,7 @@ var config = {
 			callback: '',
 			onChapterEnter: [
 				{
-					 layer: 'Public Safety Entities',
+					 layer: 'Nebraska Counties',
 					 opacity: 1,
 					 duration: 5000
 				 }
@@ -150,7 +150,7 @@ var config = {
 			callback: '',
 			onChapterEnter: [
 				{
-					 layer: 'Public Safety Entities',
+					 layer: 'Nebraska Counties',
 					 opacity: 1,
 					 duration: 5000
 				 }
