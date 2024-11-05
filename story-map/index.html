@@ -26,13 +26,19 @@
 		#header {
 			margin: auto;
 			width: 100%;
+			height: 100vh;
 			position: relative;
 			z-index: 5;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			background: rgba(0,0,0,0.8);
 		}
 		#header h1, #header h2, #header p {
 			margin: 0;
-			padding: 2vh 2vw;
+			padding: 2vh 5vw;
 			text-align: center;
+			
 		}
 		#footer {
 			width: 100%;
@@ -167,6 +173,11 @@ if (config.subtitle) {
 	var subtitleText = document.createElement('h2');
 	subtitleText.innerText = config.subtitle;
 	header.appendChild(subtitleText);
+}
+if (config.description) {
+	var descriptionText = document.createElement('p');
+	descriptionText.innerText = config.description;
+	header.appendChild(descriptionText);
 }
 
 if (config.byline) {
