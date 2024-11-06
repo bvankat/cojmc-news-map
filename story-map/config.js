@@ -125,7 +125,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>These 55 counties have two or fewer full-time local journalists.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
+			description: '<p><strong>Fifty-five counties have two or fewer full-time local journalists.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
 			location: {
 				center: [-99.886, 42.103],
 				zoom: 5.7,
