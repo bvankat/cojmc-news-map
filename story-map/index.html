@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8' />
-	<title>COJMC News Map - Story map page topper</title>
+	<title>COJMC News Map - Scrolling story map</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 	<link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
@@ -32,13 +32,28 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			background: rgba(0,0,0,0.8);
+			background: rgba(0,0,0,0.9);
 		}
 		#header h1, #header h2, #header p {
 			margin: 0;
 			padding: 2vh 5vw;
 			text-align: center;
 			
+		}
+		
+		#header h1 { 
+			color: #d00000;
+		}
+		
+		#header p {
+			max-width: 600px;
+			margin: 0 auto; 
+			line-height: 1.5;
+			font-size: 1.2rem;
+		}
+		
+		p.byline { 
+			font-weight: bold; 
 		}
 		#footer {
 			width: 100%;
@@ -80,7 +95,7 @@
 		}
 		.dark {
 			color: #fafafa;
-			background-color: #444;
+			background-color: rgba(37, 37, 37, 0.95);
 		}
 		.step {
 			padding-bottom: 50vh;
@@ -100,6 +115,12 @@
 		.step img {
 			width: 100%;
 		}
+		
+		.step p { 
+			font-size: 0.9rem;
+		}
+		
+		.step p strong { font-size: 1rem; }
 
 		@media (max-width: 750px) {
 			.centered, .lefty, .righty, .fully {
@@ -182,6 +203,7 @@ if (config.description) {
 
 if (config.byline) {
 	var bylineText = document.createElement('p');
+	bylineText.classList.add("byline");
 	bylineText.innerText = config.byline;
 	header.appendChild(bylineText);
 }
