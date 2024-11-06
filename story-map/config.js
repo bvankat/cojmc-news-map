@@ -32,21 +32,21 @@ var config = {
 			callback: '',
 			onChapterEnter: [
 				 {
-				     layer: 'Nebraska Counties',
-				     opacity: 1,
+					 layer: 'Nebraska Counties',
+					 opacity: 1,
 					 duration: 1000
 				 },
 				 {
-				     layer: 'Journalists per County',
-				     opacity: 1,
-					 duration: 5000
+					 layer: 'Journalists per County',
+					 opacity: 1,
+					 duration: 2000
 				 }
 			],
 			onChapterExit: [
 				 {
-				     layer: 'Journalists per County',
-				     opacity: 0,
-					 duration: 2000
+					 layer: 'Journalists per County',
+					 opacity: 0,
+					 duration: 1000
 				 }
 			]
 		},
@@ -60,23 +60,15 @@ var config = {
 				center: [-96.710, 40.833],
 				zoom: 5.3,
 				duration: 5000
-				// pitch: 60,
-				// bearing: -43.2,
-				// flyTo additional controls-
-				// These options control the flight curve, making it move
-				// slowly and zoom out almost completely before starting
-				// to pan.
-				//speed: 2, // make the flying slow
-				//curve: 1, // change the speed at which it zooms out
 			},
 			mapAnimation: 'flyTo',
-			rotateAnimation: true,
+			rotateAnimation: false,
 			callback: '',
 			onChapterEnter: [
 				 {
-				     layer: 'Empty Counties',
-				     opacity: 1,
-				     duration: 5000
+					 layer: 'Empty Counties',
+					 opacity: 1,
+					 duration: 2000
 				 }
 			],
 			onChapterExit: []
@@ -89,7 +81,7 @@ var config = {
 			description: '<p><strong>55 counties have two or fewer full-time local journalists, or about 58%</strong></p>',
 			location: {
 				center: [-99.886, 42.103],
-				zoom: 5.5,
+				zoom: 5.7,
 				duration: 5000
 			},
 			mapAnimation: 'flyTo',
@@ -97,29 +89,34 @@ var config = {
 			callback: '',
 			onChapterEnter: [
 				{
-					 layer: 'Local and Statewide Outlets',
+					 layer: 'Two Or Fewer',
 					 opacity: 1,
-					 duration: 1000
+					 duration: 2000
 				 },
 				{
-					 layer: 'Journalists per County',
+					 layer: 'Empty Counties',
 					 opacity: 0,
 					 duration: 2000
 				 }
 			 ],
-			onChapterExit: []
+			onChapterExit: [
+				{
+					 layer: 'Two Or Fewer',
+					 opacity: 0,
+					 duration: 1000
+				 }
+			]
 		},
 		{
 			id: 'slide-4',
 			alignment: 'right',
 			hidden: false,
 			title: '[Slide 4]',
-			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
+			description: '<p><strong>17 county seats have no local news organization.</strong></p>',
 			location: {
 				center: [-99.765, 40.768],
-				zoom: 4,
-				pitch: 0,
-				bearing: 0
+				zoom: 5.5,
+				duration: 3000
 			},
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
@@ -137,13 +134,13 @@ var config = {
 			id: 'slide-5',
 			alignment: 'fully',
 			hidden: false,
-			title: '[Slide 5]',
-			description: 'Sample text goes in here. Each slide needs a location point and a zoom level. We can customize the base map by turning on/off any of the existing layers.',
+			title: '',
+			description: '[ Wrap up the map with some text about the report and what else people can explore. ]',
 			location: {
 				center: [-99.765, 40.768],
-				zoom: 4,
-				pitch: 0,
-				bearing: 0
+				zoom: 5.3,
+				pitch: 20,
+				duration: 4000
 			},
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
@@ -153,7 +150,12 @@ var config = {
 					 layer: 'Nebraska Counties',
 					 opacity: 1,
 					 duration: 5000
-				 }
+				 },
+				 {
+					  layer: 'Journalists per County',
+					  opacity: 1,
+					  duration: 3000
+				  }
 			],
 			onChapterExit: []
 		}
