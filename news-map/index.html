@@ -474,6 +474,11 @@
 	});
 		var currentPopup;
 		
+		// Map adjustment: Instead of separating all the map.on loads, 
+		// Make one big map.on function that uses queryRenderedFeatures to return everything
+		// then use conditionals inside to ADD content to the existing popup based on the feature types. 
+		// At that point, maybe using a static div (a la, FFP Voter Guide) would be a better idea than a popup at the click location. 
+		
 		// TV and Radio Stations popups
 		map.on('click', 'TV and Radio Coverage', function (e) {
 			
@@ -878,7 +883,7 @@
 				.setLngLat(e.lngLat)
 				.setHTML(
 					"<h3>" + county + "</h3>" +
-					"<p class='small'>Percentage of households in county</p>" +
+					"<p class='small'>Percentage of households and businesses with wired broadband</p>" +
 					"<table class='numbers'><tbody>" +
 					"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
 					"</tbody></table>")
@@ -901,7 +906,7 @@
 				.setLngLat(e.lngLat)
 				.setHTML(
 					"<h3>" + city + "</h3>" +
-					"<p class='small'>Percentage of households in metro area</p>" +
+					"<p class='small'>Percentage of households and businesses with wired broadband</p>" +
 					"<table class='numbers'><tbody>" +
 					"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
 					"</tbody></table>")
