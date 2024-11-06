@@ -20,7 +20,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>There are 584 full-time local journalists working in Nebraska.</strong></p><p>Blue and green counties have higher concentrations of full- and part-time journalists.</p>',
+			description: '<p><strong>There are 584 full-time local journalists working in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
 			location: {
 				center: [-100.53151, 40.98629],
 				zoom: 5.5,
@@ -39,7 +39,7 @@ var config = {
 				 {
 					 layer: 'Journalists per County',
 					 opacity: 1,
-					 duration: 2000
+					 duration: 1000
 				 }
 			],
 			onChapterExit: [
@@ -55,7 +55,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Nebraska has 196 local and statewide news outlets.</strong></p>',
+			description: '<p><strong>Nebraska has 196 local and statewide news outlets.</strong></p><p>Red dots represent local outlets and orange dots are for statewide outlets.</p>',
 			location: {
 				center: [-98.53151, 40.98629],
 				zoom: 5.6,
@@ -69,7 +69,7 @@ var config = {
 			onChapterEnter: [
 				 {
 					 layer: 'Journalists per County',
-					 opacity: 0.1,
+					 opacity: 0,
 					 duration: 3000
 				 },
 				 {
@@ -187,8 +187,8 @@ var config = {
 			id: 'slide-6',
 			alignment: 'fully',
 			hidden: false,
-			title: '',
-			description: '[ Wrap up the map with some text about the report and what else people can explore. ]',
+			title: '[Slide 6]',
+			description: '[ Wrap up the map with a couple sentences of text about the report and what else people can explore. What should we show on the map to leave a lasting impression? ]',
 			location: {
 				center: [-99.765, 41.768],
 				zoom: 5.9,
