@@ -22,8 +22,8 @@ var config = {
 			title: '',
 			description: '<p><strong>There are 584 full-time local journalists working in Nebraska.</strong></p><p>Blue and green counties have higher concentrations of full- and part-time journalists.</p>',
 			location: {
-				center: [-98.53151, 40.98629],
-				zoom: 5,
+				center: [-100.53151, 40.98629],
+				zoom: 5.5,
 				pitch: 20,
 				bearing: 0
 			},
@@ -99,7 +99,7 @@ var config = {
 			description: '<p><strong>Eleven Nebraska counties have no local news organization based in that county.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
 			location: {
 				center: [-96.710, 40.833],
-				zoom: 5.3,
+				zoom: 5.4,
 				duration: 5000
 			},
 			mapAnimation: 'flyTo',
@@ -125,7 +125,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>55 counties have two or fewer full-time local journalists.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
+			description: '<p><strong>These 55 counties have two or fewer full-time local journalists.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
 			location: {
 				center: [-99.886, 42.103],
 				zoom: 5.7,
@@ -190,9 +190,9 @@ var config = {
 			title: '',
 			description: '[ Wrap up the map with some text about the report and what else people can explore. ]',
 			location: {
-				center: [-99.765, 42.768],
-				zoom: 5.3,
-				pitch: 20,
+				center: [-99.765, 41.768],
+				zoom: 5.9,
+				pitch: 10,
 				duration: 4000
 			},
 			mapAnimation: 'flyTo',
@@ -201,7 +201,7 @@ var config = {
 			onChapterEnter: [
 				{
 					 layer: 'Nebraska Counties',
-					 opacity: 1,
+					 opacity: 0.2,
 					 duration: 5000
 				 },
 				 {
