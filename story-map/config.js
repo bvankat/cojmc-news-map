@@ -45,7 +45,7 @@ var config = {
 			onChapterExit: [
 				 {
 					 layer: 'Journalists per County',
-					 opacity: 0.2,
+					 opacity: 0,
 					 duration: 1000
 				 }
 			]
@@ -68,22 +68,12 @@ var config = {
 			callback: '',
 			onChapterEnter: [
 				 {
-					 layer: 'Journalists per County',
-					 opacity: 0,
-					 duration: 3000
-				 },
-				 {
 					 layer: 'Local and Statewide Outlets',
 					 opacity: 1,
 					 duration: 2000
 				 }
 			],
 			onChapterExit: [
-				 {
-					 layer: 'Journalists per County',
-					 opacity: 0,
-					 duration: 1000
-				 },
 				 {
 					 layer: 'Local and Statewide Outlets',
 					 opacity: 0,
