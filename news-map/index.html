@@ -495,10 +495,21 @@
 		map.on('click', function (e) {
 			
 			const localOutlets = map.queryRenderedFeatures(e.point, { layers: ['Local and Statewide Outlets'] });
-			const journalistsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Journalists per County'] });
 			const tvAndRadioCoverage = map.queryRenderedFeatures(e.point, { layers: ['TV and Radio Coverage'] });
 			const nebraskaPublicMedia = map.queryRenderedFeatures(e.point, { layers: ['Nebraska Public Media'] });
 			
+			const journalistsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Journalists per County'] });
+			const outletsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Outlets per County'] });
+			const raceWhite = map.queryRenderedFeatures(e.point, { layers: ['Race % - White'] });
+			const raceHispanic = map.queryRenderedFeatures(e.point, { layers: ['Race % - Hispanic'] });
+			const education = map.queryRenderedFeatures(e.point, { layers: ['Education'] });
+			const usBorn = map.queryRenderedFeatures(e.point, { layers: ['US Born'] });
+			const veterans = map.queryRenderedFeatures(e.point, { layers: ['Veterans'] });
+			const ownVsRent = map.queryRenderedFeatures(e.point, { layers: ['Own vs. Rent'] });
+			const presidential2020 = map.queryRenderedFeatures(e.point, { layers: ['2020 Presidential'] });
+			const registeredVoters = map.queryRenderedFeatures(e.point, { layers: ['Registered Voters'] });
+			const broadbandCities = map.queryRenderedFeatures(e.point, { layers: ['Broadband Cities'] });
+			const broadbandCounties = map.queryRenderedFeatures(e.point, { layers: ['Broadband Counties'] });
 			
 			// Close the current popup if it exists and set the location to the clicked point
 			
@@ -534,7 +545,7 @@
 			if(nebraskaPublicMedia.length > 0) {
 				console.log({nebraskaPublicMedia});
 				
-				popupContent =  "<h3>Stations at this location: " + nebraskaPublicMedia.length + "</h3><table><tbody>";
+				popupContent += "<h3>Stations at this location: " + nebraskaPublicMedia.length + "</h3><table><tbody>";
 			
 				nebraskaPublicMedia.forEach((feature) => {
 					const props = feature.properties;
@@ -551,23 +562,257 @@
 			
 			
 			// TV and Radio Coverage
-
-
-//Outlets per County
-//Race % - White
-//Race % - Hispanic
-//Education
-//US Born
-//Veterans
-//Own vs. Rent
-//2020 Presidential
-//Registered Voters
-//Broadband Cities
-//Broadband Counties	
+			if(tvAndRadioCoverage.length > 0) {
+				console.log({tvAndRadioCoverage});
 			
+				popupContent +=  "<h3>Stations at this location: " + tvAndRadioCoverage.length + "</h3><table><tbody>";
+			
+				tvAndRadioCoverage.forEach((feature) => {
+					const props = feature.properties;
+					var callsign = props.callsign;
+					var freq = props.frequency;
+					var service = props.newsorg_am 
+					var owner = props.newsorg_ow;
+					popupContent += "<tr><td>" + callsign + "</td><td>" + service + "</td><tr>";
+				});
+					
+				popupContent += "</tbody></table>";
+			
+			}
+
+
+			//OUTLETS PER COUNTY
+			if (outletsPerCounty.length > 0) {
+				
+				console.log({outletsPerCounty});
+				
+				const countyData = outletsPerCounty[0];
+						
+				var county = countyData.properties.NAMELSAD;
+				var local_outlets = countyData.properties["Total LNOs"];
+				var outlet_names = countyData.properties["LNO names"];
+				
+				if ( local_outlets == '' ){
+					var outlet_names = "None";
+				};
+				
+				var statewide_outlets = countyData.properties["Statewide news organizations"];
+				
+				if( statewide_outlets ) {
+					const statewide_list = statewide_outlets.split(',');
+					const statewide_count = statewide_list.length;
+					
+					popupContent +=  
+						"<h3>News Outlets in " + county + "</h3>" +
+						"<table><tbody>" +
+						"<tr><td>Local</td><td>" + local_outlets + "</td></tr>" +
+						"<tr><td>Statewide</td><td>" + statewide_count + "</td></tr>" +
+						"<tr><td colspan=2 style='font-weight: normal !important'>Local outlets: " + outlet_names + "</td></tr>" +
+						"<tr><td colspan=2 style='font-weight: normal !important'>Statewide outlets: " + statewide_list + "</td></tr>" +
+						"</tbody></table>";
+						
+				} else {
+					popupContent +=
+						"<h3>News Outlets in " + county + "</h3>" +
+						"<table><tbody>" +
+						"<tr><td>Local</td><td>" + local_outlets + "</td></tr></tbody></table>" +
+						"<p style='margin-top: 5px; font-size: 12px; color #666'>Outlets: " + outlet_names + "</p>";		
+				}
+			}
+			
+			
+			//RACE % - WHITE
+			if(raceWhite.length > 0){
+				
+				console.log({raceWhite});
+				
+				const countyData = raceWhite[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var asian = countyData.properties.Asian;
+				var black = countyData.properties.Black;
+				var hispanic = countyData.properties.Hispanic;
+				var white = countyData.properties.White;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>POPULATION BY RACE</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Asian</td><td> " + asian.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Black</td><td>" + black.toFixed(1) + "%</td></tr>" + 
+						"<tr><td>Hispanic</td><td>" + hispanic.toFixed(1) + "%</td></tr>" +
+						"<tr><td>White</td><td>" + white.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+	
+			//Race % - Hispanic
+			if(raceHispanic.length > 0){
+				
+				console.log({ raceHispanic });
+				const countyData = raceHispanic[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var asian = countyData.properties.Asian;
+				var black = countyData.properties.Black;
+				var hispanic = countyData.properties.Hispanic;
+				var white = countyData.properties.White;
+				
+				popupContent +-
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>POPULATION BY RACE</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Asian</td><td> " + asian.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Black</td><td>" + black.toFixed(1) + "%</td></tr>" + 
+						"<tr><td>Hispanic</td><td>" + hispanic.toFixed(1) + "%</td></tr>" +
+						"<tr><td>White</td><td>" + white.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+				
+			}
+			
+			//Education
+			if(education.length > 0){
+								
+				console.log({ education });
+				const countyData = education[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var noEdu = countyData.properties.NoEdu;
+				var hsDip = countyData.properties.HSdip;
+				var bach = countyData.properties.Bach;
+				var masters = countyData.properties.Masters;
+				var phd = countyData.properties.Phd;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>Highest education level obtained</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>No education</td><td>" + noEdu.toFixed(1) + "%</td></tr>" +
+						"<tr><td>HS diploma</td><td>" + hsDip.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Bachelor</td><td>" + bach.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Masters</td><td>" + masters.toFixed(1) + "%</td></tr>" +
+						"<tr><td>PhD</td><td>" + phd.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+			
+			//US Born
+			if(usBorn.length > 0){
+								
+				console.log({ usBorn });
+				const countyData = usBorn[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var usBornPct = countyData.properties.USb;
+				var naturalized = countyData.properties.Naturalized;
+				var notCitizen = countyData.properties.Notcitizen;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>U.S. Born</td><td>" + usBornPct.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Naturalized</td><td>" + naturalized.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Non-citizen</td><td>" + notCitizen.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+			
+			//Veterans
+			if(veterans.length > 0){
+								
+				console.log({ veterans });
+				const countyData = veterans[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var veteran = countyData.properties.Veteran;
+				var notVeteran = countyData.properties.Nonvet;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Veterans</td><td>" + veteran.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Non-veterans</td><td>" + notVeteran.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+			
+			//Own vs. Rent
+			if(ownVsRent.length > 0){
+								
+				console.log({ ownVsRent });
+				const countyData = ownVsRent[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var own = countyData.properties.Owneroccupied;
+				var rent = countyData.properties.Renteroccupied;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>Total households</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Owner-occupied</td><td>" + own.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Renter-occupied</td><td>" + rent.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+
+			
+			//Registered Voters
+			if(registeredVoters.length > 0){
+								
+				console.log({ registeredVoters });
+				const countyData = registeredVoters[0];
+				
+				var county = countyData.properties.NAMELSAD;
+				var voters = countyData.properties["Grand Total"];
+				var republican = countyData.properties.Republican;
+				var rPct = countyData.properties.RPCT;
+				var democrat = countyData.properties.Democratic;
+				var dPct = countyData.properties.DPCT;
+				var nonpartisan = countyData.properties.Nonpartisan;
+				var nPct = countyData.properties.NPCT;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>Registered Voters: " + voters.toLocaleString() + "</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Republican</td><td>" + republican.toLocaleString() + "</td><td>" + rPct.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Democrat</td><td>" + democrat.toLocaleString() + "</td><td>" + dPct.toFixed(1) + "%</td></tr>" +
+						"<tr><td>Nonpartisan</td><td>" + nonpartisan.toLocaleString() + "</td><td>" + nPct.toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+
+			//Broadband Cities
+			if(broadbandCities.length > 0){
+								
+				console.log({ broadbandCities });
+				const cityData = broadbandCities[0];
+				
+				var city = cityData.properties.city;
+				var broadbandPct = cityData.properties.pct_served;
+				
+				popupContent +=
+						"<h3>" + city + "</h3>" +
+						"<p class='small'>Percentage of households and businesses with wired broadband</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+			
+			//Broadband Counties
+			if(broadbandCounties.length > 0){
+								
+				console.log({ broadbandCounties });
+				const countyData = broadbandCounties[0];
+				
+				var county = countyData.properties.county_nam;
+				var broadbandPct = countyData.properties.pct_served;
+				
+				popupContent +=
+						"<h3>" + county + "</h3>" +
+						"<p class='small'>Percentage of households and businesses with wired broadband</p>" +
+						"<table class='numbers'><tbody>" +
+						"<tr><td>Broadband access</td><td>" + (broadbandPct * 100).toFixed(1) + "%</td></tr>" +
+						"</tbody></table>";
+			}
+
 			
 			// LOCAL AND STATEWIDE OUTLETS
-			// If there are outlets at that point, get the details
 			if (localOutlets.length > 0) {
 				
 				console.log({localOutlets});
