@@ -10,8 +10,8 @@ var config = {
 	theme: 'dark',
 	use3dTerrain: false, //set true for enabling 3D maps.
 	auto: false,
-	title: 'Nebraska Local News Map 2024',
-	byline: 'Report by XXXXXXXX',
+	title: 'Nebraska Local News Ecosystems Report and Map 2024',
+	byline: 'Scroll down to continue ↓',
 	description: 'In the vastness of the Great Plains state of Nebraska, there are wide stretches with no local journalists or local news organizations and other parts brimming with local media access. This report and digital map provides the true look at local journalism access in Nebraska. Explore this site to understand: Who has access to local news and who does not and why you should care.',
 	footer: '[optional] Source: source citations, etc.',
 	chapters: [
@@ -177,13 +177,13 @@ var config = {
 			id: 'slide-6',
 			alignment: 'fully',
 			hidden: false,
-			title: '[Slide 6]',
-			description: '[ Wrap up the map with a couple sentences of text about the report and what else people can explore. What should we show on the map to leave a lasting impression? ]',
+			title: '',
+			description: 'Telemundo Nebraska is the only professional journalism organization in the state providing local news in Spanish with five local reporters in Omaha and one in Grand Island.',
 			location: {
-				center: [-99.765, 41.768],
-				zoom: 5.9,
+				center: [-96.765, 40.768],
+				zoom: 6.2,
 				pitch: 10,
-				duration: 4000
+				duration: 5000
 			},
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
@@ -195,12 +195,18 @@ var config = {
 					 duration: 5000
 				 },
 				 {
-					  layer: 'Journalists per County',
+					  layer: 'Telemundo Stations',
 					  opacity: 1,
 					  duration: 3000
 				  }
 			],
-			onChapterExit: []
+			onChapterExit: [
+				{
+					  layer: 'Telemundo Stations',
+					  opacity: 0,
+					  duration: 1000
+				  }
+			]
 		}
 	]
 };

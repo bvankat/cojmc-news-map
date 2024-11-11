@@ -8,11 +8,16 @@
 	<script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 	<script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
 	<script src="https://unpkg.com/scrollama"></script>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	
 	<style>
 		body {
 			margin:0;
 			padding:0;
-			font-family: sans-serif;
+			font-family: 'Work Sans', system-ui, sans-serif;
 		}
 		a, a:hover, a:visited {
 			color: #0071bc;
@@ -32,28 +37,35 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			background: rgba(0,0,0,0.9);
+			background: rgba(254,253,250,1);
 		}
 		#header h1, #header h2, #header p {
 			margin: 0;
 			padding: 2vh 5vw;
 			text-align: center;
-			
 		}
 		
 		#header h1 { 
-			background-color: #d00000;
 			color: #fff; 
-			display: inline-block !important;
 			text-align: center; 
 			font-size: 2.25rem;
+			max-width: 600px;
+			margin: 0.5rem auto;
 		}
+		
+		h1 span {
+			display: inline-block !important;
+			background-color: #d00000;
+			padding: 15px;
+		}
+
 		
 		#header p {
 			max-width: 600px;
 			margin: 0 auto; 
 			line-height: 1.5;
 			font-size: 1.2rem;
+			color: #333;
 		}
 		
 		p.byline { 
@@ -193,7 +205,9 @@ var header = document.createElement('div');
 
 if (config.title) {
 	var titleText = document.createElement('h1');
-	titleText.innerText = config.title;
+	var span = document.createElement('span');
+	span.textContent = config.title;
+	titleText.appendChild(span);
 	header.appendChild(titleText);
 }
 
