@@ -39,7 +39,9 @@
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 		
-	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; height: 50px; margin-bottom: 30px; width: 100px; }
+	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; margin-bottom: 30px; border: 0; }
+	
+	#legend p { margin: 0; font-weight: bold; }
 	
 	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
 	
@@ -92,7 +94,7 @@
 	<div id="map"></div>
 
 	<div class="map-overlay" id="legend">
-		<p>[ Map legend can go down here? ]</p>
+		<p>Legend</p>
 	</div>
 
 <script>
@@ -134,6 +136,38 @@
 	// Let's add some layers
 	
 	map.on('load', function () {
+		
+		const legend_layers = [
+		  '',
+		  '',
+		  '',
+		  '',
+		  ''
+		];
+		const legend_colors = [
+		  '#edf8fb',  
+		  '#c7e9b4',
+		  '#7fcdbb',
+		  '#41b6c4',
+		  '#2c7fb8',  
+		  '#253494'  
+		];
+		
+		const legend = document.getElementById('legend');
+		
+		legend_layers.forEach((layer, i) => {
+		  const color = legend_colors[i];
+		  const item = document.createElement('div');
+		  const key = document.createElement('span');
+		  key.className = 'legend-key';
+		  key.style.backgroundColor = color;
+		
+		  const value = document.createElement('span');
+		  value.innerHTML = `${layer}`;
+		  item.appendChild(key);
+		  item.appendChild(value);
+		  legend.appendChild(item);
+		});
 	
 
 		map.addSource('Demographics', {
