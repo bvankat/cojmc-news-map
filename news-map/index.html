@@ -853,7 +853,7 @@
 				
 				console.log({localOutlets});
 				
-				popupContent += "<h3 class='outlets'>Outlets at this location</h3><table class='outlets'><tbody>";
+				popupContent += "<h3 class='outlets'>Outlets at this location</h3><table class='outlets'><thead><th>Name</th><th>Ownership</th></thead><tbody>";
 				
 				localOutlets.forEach((outlet) => {
 					var outletName = outlet.properties.newsorg_na;
