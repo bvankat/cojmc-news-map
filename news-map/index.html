@@ -156,12 +156,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'White'], // Feature property to base the colors on
-					0, '#ffffd4',  
-					20, '#fee391',
-					40, '#fec44f',
-					60, '#fe9929',
-					80, '#d95f0e',  
-					100, '#993404'   
+					0, '#edf8fb',  
+					20, '#c7e9b4',
+					40, '#7fcdbb',
+					60, '#41b6c4',
+					80, '#2c7fb8',  
+					100, '#253494'   
 				]
 		  	}
 		}); 
@@ -180,12 +180,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'Hispanic'], // Feature property to base the colors on
-					0, '#ffffd4',  
-					10, '#fee391',
-					20, '#fec44f',
-					30, '#fe9929',
-					40, '#d95f0e',  
-					50, '#993404'   
+					0, '#edf8fb',  
+					10, '#c7e9b4',
+					20, '#7fcdbb',
+					30, '#41b6c4',
+					40, '#2c7fb8',  
+					50, '#253494'   
 				]
 		  	}
 		}); 
@@ -204,12 +204,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'Bach'], // Feature property to base the colors on
-					5, '#ffffd4',  
-					10, '#fee391',
-					15, '#fec44f',
-					20, '#fe9929',
-					25, '#d95f0e',  
-					30, '#993404'   
+					5, '#edf8fb',  
+					10, '#c7e9b4',
+					15, '#7fcdbb',
+					20, '#41b6c4',
+					25, '#2c7fb8',  
+					30, '#253494'   
 				]
 		  	}
 		}); 
@@ -228,12 +228,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'USb'], // Feature property to base the colors on
-					0, '#ffffd4',  
-					20, '#fee391',
-					40, '#fec44f',
-					60, '#fe9929',
-					80, '#d95f0e',  
-					100, '#993404'   
+					0, '#edf8fb',  
+					20, '#c7e9b4',
+					40, '#7fcdbb',
+					60, '#41b6c4',
+					80, '#2c7fb8',  
+					100, '#253494'   
 				]
 		  	}
 		}); 
@@ -252,12 +252,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'Veteran'], // Feature property to base the colors on
-					0, '#ffffd4',  
-					10, '#fee391',
-					20, '#fec44f',
-					30, '#fe9929',
-					40, '#d95f0e',  
-					50, '#993404'   
+					0, '#edf8fb',  
+					10, '#c7e9b4',
+					20, '#7fcdbb',
+					30, '#41b6c4',
+					40, '#2c7fb8',  
+					50, '#253494'   
 				]
 		  	}
 		}); 
@@ -276,12 +276,12 @@
 					'interpolate',
 					['linear'],
 					['get', 'Owneroccupied'], // Feature property to base the colors on
-					0, '#ffffd4',  
-					20, '#fee391',
-					40, '#fec44f',
-					60, '#fe9929',
-					80, '#d95f0e',  
-					100, '#993404'   
+					0, '#edf8fb',  
+					20, '#c7e9b4',
+					40, '#7fcdbb',
+					60, '#41b6c4',
+					80, '#2c7fb8',  
+					100, '#253494'   
 				]
 		  	}
 		}); 
@@ -365,17 +365,18 @@
 			'interpolate',
 			['linear'],
 			['get', 'pct_served'], // Feature property to base the colors on
-			0, '#ffffd4',  
-			0.2, '#fee391',
-			0.4, '#fec44f',
-			0.6, '#fe9929',
-			0.8, '#d95f0e',  
-			1, '#993404'   
+			0, '#edf8fb',  
+			0.2, '#c7e9b4',
+			0.4, '#7fcdbb',
+			0.6, '#41b6c4',
+			0.8, '#2c7fb8',  
+			1, '#253494'   
 		]);
 		
 		
 		// Optionally adjust the opacity if needed
 		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
+		map.setPaintProperty('Registered Voters', 'fill-opacity', 0.6);
 		map.setPaintProperty('Broadband Counties', 'fill-opacity', 0.6);
 		
 		// Name each of the Data layers
@@ -657,7 +658,7 @@
 				var hispanic = countyData.properties.Hispanic;
 				var white = countyData.properties.White;
 				
-				popupContent +-
+				popupContent +=
 						"<h3>" + county + "</h3>" +
 						"<p class='small'>POPULATION BY RACE</p>" +
 						"<table class='numbers'><tbody>" +
