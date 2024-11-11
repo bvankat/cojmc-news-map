@@ -13,7 +13,7 @@ var config = {
 	title: 'Nebraska Local News Ecosystems Report and Map 2024',
 	byline: 'Scroll down to continue ↓',
 	description: 'In the vastness of the Great Plains state of Nebraska, there are wide stretches with no local journalists or local news organizations and other parts brimming with local media access. This report and digital map provides the true look at local journalism access in Nebraska. Explore this site to understand: Who has access to local news and who does not and why you should care.',
-	footer: '[optional] Source: source citations, etc.',
+	footer: '',
 	chapters: [
 		{
 			id: 'slide-1',
@@ -22,10 +22,11 @@ var config = {
 			title: '',
 			description: '<p><strong>There are 584 full-time local journalists working in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
 			location: {
-				center: [-100.53151, 40.98629],
-				zoom: 5.5,
+				center: [-100.53151, 42],
+				zoom: 5.4,
 				pitch: 20,
-				bearing: 0
+				bearing: 0,
+				duration: 3000
 			},
 			mapAnimation: 'flyTo',
 			rotateAnimation: false,
@@ -191,8 +192,8 @@ var config = {
 			onChapterEnter: [
 				{
 					 layer: 'Nebraska Counties',
-					 opacity: 0.2,
-					 duration: 5000
+					 opacity: 0,
+					 duration: 1000
 				 },
 				 {
 					  layer: 'Telemundo Stations',
@@ -205,7 +206,8 @@ var config = {
 					  layer: 'Telemundo Stations',
 					  opacity: 0,
 					  duration: 1000
-				  }
+				  },
+				  
 			]
 		}
 	]
