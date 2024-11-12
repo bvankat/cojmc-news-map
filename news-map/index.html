@@ -39,14 +39,31 @@
 	
 	.map-overlay {  position: absolute;  bottom: 0; right: 0; background: rgba(255,255,255,0.8);  margin-right: 10px;  font-size: 12px;   overflow: auto; padding: 10px; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.15); }
 		
-	#legend {  box-shadow: 0 1px 2px rgba(0 0 0 0.1); line-height: 18px; margin-bottom: 30px; border: 0; }
+	#legend { background: rgba(255,255,255,0.6); box-shadow: 0 1px 2px rgba(0 0 0 0.1); padding: 10px; line-height: 18px; margin-bottom: 30px; border: 0; border-radius: 5px; }
 	
-	#legend p { margin: 0; font-weight: bold; }
+	.legend-bar {
+	  width: 100%;
+	  height: 16px;
+	  background: linear-gradient(to right, 
+		rgba(235, 255, 163, 1) 0%,
+		rgba(0, 209, 52, 1) 33%,
+		rgba(0, 163, 245, 1) 66%,
+		rgba(5, 87, 250, 1) 100%
+	  );
+	  border-radius: 2px;
+	  margin: 6px 0;
+	}
+	.legend-labels {
+	  display: flex;
+	  justify-content: space-between;
+	  color: #aaa;
+	  font-size: 9px;
+	}
 	
-	.legend-key { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
-	
-	.mapboxgl-popup { max-width: 320px; }
-	.mapboxgl-popup-content { font-family: system-ui, sans-serif; padding: 15px; border-radius: 8px; }
+	#legend p.legend-name { margin: 0; font-weight: bold; }
+		
+	.mapboxgl-popup { max-width: 300px !important; }
+	.mapboxgl-popup-content { font-family: system-ui, sans-serif; padding: 20px; border-radius: 8px; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px);}
 	.mapboxgl-popup-content p { font-size: 13px; line-height: 1.5; margin: 0; }
 	.mapboxgl-popup-content p.small { font-size: 11px; color: #aaa; margin-bottom: 5px; }
 	.mapboxgl-popup-content h3 { margin: 0 0 5px 0; }
@@ -76,10 +93,10 @@
 			<select id="layer-switcher">
 				<option value="">Select a layer</option>
 				<option value="Journalists per County" selected>Journalists per County</option>
-				<option value="Outlets per County">News Outlets per County</option>
-				<option value="Race % - White">White %</option>
-				<option value="Race % - Hispanic">Hispanic %</option>
-				<option value="US Born">U.S. Citizenship</option>
+				<option value="Outlets per County">Outlets per County</option>
+				<option value="Race % - White">Race % - White</option>
+				<option value="Race % - Hispanic">Race % - Hispanic</option>
+				<option value="US Born">Citizenship % - U.S. Born</option>
 				<option value="Veterans">Veterans</option>
 				<option value="Own vs. Rent">Home Ownership</option>
 				<option value="Education">Education</option>
@@ -94,16 +111,120 @@
 	<div id="map"></div>
 
 	<div class="map-overlay" id="legend">
-		<p>Legend</p>
+		<p class="legend-name">Journalists per County</p>
+		<div class="legend-bar"></div>
+		<div class="legend-labels">
+		  <span class="min">1</span>
+		  <span class="max">134</span>
+		</div>
 	</div>
+	
+
 
 <script>
 	
-	// Eds note: Does this work? 
 	const bounds = [  
 		[ -108.32, 37.57 ],
 		[ -90.35, 45.54 ]
 	];  
+
+	
+	const default_colors = [
+		[ 0, '#edf8fb' ],  
+		[ 20, '#c7e9b4' ],
+		[ 40, '#7fcdbb' ],
+		[ 60, '#41b6c4' ],
+		[ 80, '#2c7fb8' ],  
+		[ 100, '#253494' ] 
+	];
+	
+	const legend_layers = [
+		{ 
+			layerName: "Journalists per County", 
+			legendText: "Journalists per County", 
+			legendMin: 1,
+			legendMax: 134,
+			legendColors: [
+				'rgba(235, 255, 163, 1) 0%',
+				'rgba(0, 209, 52, 1) 33%',
+				'rgba(0, 163, 245, 1) 66%',
+				'rgba(5, 87, 250, 1) 100%'
+			]
+		},
+		{ 
+			layerName: "Outlets per County", 
+			legendText: "Outlets per County", 
+			legendMin: 1,
+			legendMax: 20,
+			legendColors: [
+				'#f3e79b 20%',
+				'rgba(250, 189, 133, 1) 40%',
+				'rgba(218, 113, 143, 1) 60%',
+				'rgba(169, 91, 157, 1) 80%',
+				'rgba(93, 84, 166, 1) 100%'
+			]
+		},
+		{ 
+			layerName: "Race % - White", 
+			legendText: "Race % - White", 
+			legendMin: 30,
+			legendMax: 100,
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			]
+		},
+		{ 
+			layerName: "Race % - Hispanic", 
+			legendText: "Race % - Hispanic", 
+			legendMin: 1,
+			legendMax: 40,
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			]
+		},
+		{ 
+			layerName: "US Born", 
+			legendText: "US Born", 
+			legendMin: 1,
+			legendMax: 100,
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			]
+		},
+		{ 
+			layerName: "Education", 
+			legendText: "Education", 
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			],
+			legendMin: 1,
+			legendMax: 30
+		}
+	];
+	
+
+	
+	
 	
 	// Load initial map
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA'; //Mapbox token COJMC News Map
@@ -136,39 +257,8 @@
 	// Let's add some layers
 	
 	map.on('load', function () {
-		
-		const legend_layers = [
-		  '',
-		  '',
-		  '',
-		  '',
-		  ''
-		];
-		const legend_colors = [
-		  '#edf8fb',  
-		  '#c7e9b4',
-		  '#7fcdbb',
-		  '#41b6c4',
-		  '#2c7fb8',  
-		  '#253494'  
-		];
-		
+				
 		const legend = document.getElementById('legend');
-		
-		legend_layers.forEach((layer, i) => {
-		  const color = legend_colors[i];
-		  const item = document.createElement('div');
-		  const key = document.createElement('span');
-		  key.className = 'legend-key';
-		  key.style.backgroundColor = color;
-		
-		  const value = document.createElement('span');
-		  value.innerHTML = `${layer}`;
-		  item.appendChild(key);
-		  item.appendChild(value);
-		  legend.appendChild(item);
-		});
-	
 
 		map.addSource('Demographics', {
 			type: 'geojson',
@@ -430,16 +520,41 @@
 			'Broadband Counties'
 		];
 		
+		// Function to update the legend
+		function updateLegend(layerName, legendText, legendMin, legendMax, legendColors) {
+			
+			console.log("Updating with: ", layerName, legendText, legendMin, legendMax, legendColors);
+			
+		// Update the legend name
+		const legendTextElement = document.querySelector('.legend-name');
+		if (legendTextElement) {
+			legendTextElement.textContent = legendText;
+		  } else {
+			console.warn('.legend-name element not found');
+		  }
+
+		  // Update the min and max labels
+		  document.querySelector('.legend-labels .min').textContent = legendMin;
+		  document.querySelector('.legend-labels .max').textContent = legendMax;
+		
+		  // Update the gradient bar
+		  document.querySelector('.legend-bar').style.background = `linear-gradient(to right, ${legendColors.join(', ')})`;
+		};
+		
 		// Layer switcher for Demographics layers
 		const layerSwitcher = document.getElementById('layer-switcher');
 		layerSwitcher.addEventListener('change', function() {
 		
 			for (const id of DemographicLayers) {
 				map.setLayoutProperty(id, 'visibility', 'none');
-			}
+			};
 			
 			// Show the selected layer
 			const selectedLayer = this.value;
+			
+			let targetLayer = legend_layers.find(layer => layer.layerName === selectedLayer);
+			
+			updateLegend(targetLayer.layerName, targetLayer.legendText, targetLayer.legendMin, targetLayer.legendMax, targetLayer.legendColors);
 			
 			if(DemographicLayers.includes(selectedLayer)) {
 				map.setLayoutProperty(selectedLayer, 'visibility', 'visible');
@@ -527,8 +642,9 @@
 		// At that point, maybe using a static div (a la, FFP Voter Guide) would be a better idea than a popup at the click location. 
 		
 		
-		// Journalists per County popups
 		map.on('click', function (e) {
+			
+			
 			
 			const localOutlets = map.queryRenderedFeatures(e.point, { layers: ['Local and Statewide Outlets'] });
 			const tvAndRadioCoverage = map.queryRenderedFeatures(e.point, { layers: ['TV and Radio Coverage'] });
@@ -574,6 +690,7 @@
 						"<tr><td>Full-time</td><td>" + fulltime + "</td></tr>" +
 						"<tr><td>Part-time</td><td>" + parttime + "</td></tr>" +
 						"</tbody></table>";
+						
 			}
 			
 			
@@ -862,7 +979,6 @@
 				});
 				
 				popupContent += "</tbody></table>"
-			
 			
 			}
 
