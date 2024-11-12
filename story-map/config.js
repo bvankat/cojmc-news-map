@@ -56,7 +56,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Nebraska has 196 local and statewide news outlets.</strong></p><p>Red dots represent local outlets and orange dots are for statewide outlets.</p>',
+			description: '<p><strong>Nebraska has 196 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
 			location: {
 				center: [-98.53151, 40.98629],
 				zoom: 5.6,
@@ -87,7 +87,7 @@ var config = {
 			alignment: 'right',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Eleven Nebraska counties have no local news organization based in that county.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
+			description: '<p><strong>Eleven Nebraska counties have <span class="red">no local news organizations</span>.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
 			location: {
 				center: [-96.710, 40.833],
 				zoom: 5.4,
@@ -116,7 +116,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Fifty-five counties have two or fewer full-time local journalists.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
+			description: '<p><strong>Fifty-five counties have <span class="red">two or fewer full-time local journalists</span>.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
 			location: {
 				center: [-99.886, 42.103],
 				zoom: 5.7,
@@ -150,7 +150,7 @@ var config = {
 			alignment: 'right',
 			hidden: false,
 			title: '',
-			description: '<p><strong>17 county seats have no local news organization.</strong></p><p>No local news organizations based in: Alliance, Bartlett, Beaver City, Brewster, Center, Clay Center, Dakota City, Elwood, Tryon, Harrison, Harrisburg, Osceola, Papillion, Plattsmouth, Rushville, Stockville and Taylor.',
+			description: '<p><strong><span class="orange">17 county seats</span> have no local news organization.</strong></p><p>There are no local news organizations based in: Alliance, Bartlett, Beaver City, Brewster, Center, Clay Center, Dakota City, Elwood, Tryon, Harrison, Harrisburg, Osceola, Papillion, Plattsmouth, Rushville, Stockville and Taylor.',
 			location: {
 				center: [-97.765, 40.768],
 				zoom: 5.5,
@@ -179,9 +179,9 @@ var config = {
 			alignment: 'fully',
 			hidden: false,
 			title: '',
-			description: 'Telemundo Nebraska is the only professional journalism organization in the state providing local news in Spanish with five local reporters in Omaha and one in Grand Island.',
+			description: '<strong><span class="red">Telemundo Nebraska</span> is the only professional journalism organization in the state providing local news in Spanish with five local reporters in Omaha and one in Grand Island.</strong>',
 			location: {
-				center: [-96.765, 40.768],
+				center: [-96.765, 41.768],
 				zoom: 6.2,
 				pitch: 10,
 				duration: 5000
@@ -196,14 +196,14 @@ var config = {
 					 duration: 1000
 				 },
 				 {
-					  layer: 'Telemundo Stations',
+					  layer: 'Telemundo Locations',
 					  opacity: 1,
 					  duration: 3000
 				  }
 			],
 			onChapterExit: [
 				{
-					  layer: 'Telemundo Stations',
+					  layer: 'Telemundo Locations',
 					  opacity: 0,
 					  duration: 1000
 				  },
