@@ -94,12 +94,12 @@
 				<option value="">Select a layer</option>
 				<option value="Journalists per County" selected>Journalists per County</option>
 				<option value="Outlets per County">Outlets per County</option>
-				<option value="Race % - White">Race % - White</option>
-				<option value="Race % - Hispanic">Race % - Hispanic</option>
-				<option value="US Born">Citizenship % - U.S. Born</option>
+				<option value="Race % - White">Race: White %</option>
+				<option value="Race % - Hispanic">Race: Hispanic %</option>
+				<option value="US Born">Citizenship: U.S. Born %</option>
+				<option value="Education">Education</option>
 				<option value="Veterans">Veterans</option>
 				<option value="Own vs. Rent">Home Ownership</option>
-				<option value="Education">Education</option>
 				<option value="2020 Presidential">2020 Election</option>
 				<option value="Registered Voters">Registered Voters</option>
 				<option value="Broadband Counties">Broadband - Counties</option>
@@ -166,9 +166,9 @@
 		},
 		{ 
 			layerName: "Race % - White", 
-			legendText: "Race % - White", 
-			legendMin: 30,
-			legendMax: 100,
+			legendText: "Race: White %", 
+			legendMin: '30%',
+			legendMax: '100%',
 			legendColors: [
 				'#edf8fb 0%',
 				'#c7e9b4 20%',
@@ -180,9 +180,9 @@
 		},
 		{ 
 			layerName: "Race % - Hispanic", 
-			legendText: "Race % - Hispanic", 
-			legendMin: 1,
-			legendMax: 40,
+			legendText: "Race: Hispanic %", 
+			legendMin: '1%',
+			legendMax: '40%',
 			legendColors: [
 				'#edf8fb 0%',
 				'#c7e9b4 20%',
@@ -194,9 +194,9 @@
 		},
 		{ 
 			layerName: "US Born", 
-			legendText: "US Born", 
-			legendMin: 1,
-			legendMax: 100,
+			legendText: "Citizenship: U.S. Born %", 
+			legendMin: '1%',
+			legendMax: '100%',
 			legendColors: [
 				'#edf8fb 0%',
 				'#c7e9b4 20%',
@@ -208,7 +208,7 @@
 		},
 		{ 
 			layerName: "Education", 
-			legendText: "Education", 
+			legendText: "Bachelors Degree %", 
 			legendColors: [
 				'#edf8fb 0%',
 				'#c7e9b4 20%',
@@ -217,14 +217,91 @@
 				'#2c7fb8 80%',
 				'#253494 100%'
 			],
-			legendMin: 1,
-			legendMax: 30
+			legendMin: '5%',
+			legendMax: '30%'
+		},
+		{ 
+			layerName: "Veterans", 
+			legendText: "Population % - Veterans", 
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			],
+			legendMin: "2%",
+			legendMax: "20%"
+		},
+		{ 
+			layerName: "Own vs. Rent", 
+			legendText: "Owner-occupied %", 
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			],
+			legendMin: "40%",
+			legendMax: "80%"
+		},
+		{ 
+			layerName: "2020 Presidential", 
+			legendText: "2020 Election: President", 
+			legendColors: [
+				'#0000FF 0%',
+				'#BFBFFF 33%',
+				'#FFBFBF 66%',
+				'#FF0000 100%'
+			],
+			legendMin: "100% D",
+			legendMax: "100% R"
+		},
+		{ 
+			layerName: "Registered Voters", 
+			legendText: "Registered Voters", 
+			legendColors: [
+				'#0000FF 0%',
+				'#BFBFFF 33%',
+				'#FFBFBF 66%',
+				'#FF0000 100%'
+			],
+			legendMin: "100% D",
+			legendMax: "100% R"
+		},
+		{ 
+			layerName: "Broadband Counties", 
+			legendText: "Broadband: Households and Business %", 
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			],
+			legendMin: "0%",
+			legendMax: "100%"
+		},
+		{ 
+			layerName: "Broadband Cities", 
+			legendText: "Broadband: Households and Business %", 
+			legendColors: [
+				'#edf8fb 0%',
+				'#c7e9b4 20%',
+				'#7fcdbb 40%',
+				'#41b6c4 60%',
+				'#2c7fb8 80%',
+				'#253494 100%'
+			],
+			legendMin: "0%",
+			legendMax: "100%"
 		}
 	];
-	
-
-	
-	
+		
 	
 	// Load initial map
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYnZhbmthdCIsImEiOiJjbHhlemU4bmcwMjVqMmxwdzRhYXNpMXR3In0.9nLycyn371SDdXa_rdOTuA'; //Mapbox token COJMC News Map
@@ -497,7 +574,6 @@
 			0.8, '#2c7fb8',  
 			1, '#253494'   
 		]);
-		
 		
 		// Optionally adjust the opacity if needed
 		map.setPaintProperty('2020 Presidential', 'fill-opacity', 0.6);
