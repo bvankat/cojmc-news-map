@@ -311,7 +311,7 @@
 		container: 'map',
 		style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
 		zoom: 5.5,
-		maxZoom: 10,
+		maxZoom: 12,
 		center: [-100, 41.5],
 		maxBounds: bounds
 	});
@@ -489,6 +489,31 @@
 				]
 		  	}
 		}); 
+		
+		// Add layer to show outlet names on zoom
+		map.addLayer({
+		  'id': 'outlet-labels',
+		  'type': 'symbol',
+		  'source': 'composite',
+		  'source-layer': 'COJMC_-_all-LNO-points',
+		  'layout': {
+			'text-field': ['get', 'Name'],
+			'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+			'text-radial-offset': 0.5,
+			'text-justify': 'auto',
+			'visibility': 'visible',
+			'text-size': 11
+		  },
+		  'paint': {
+			'text-opacity': [
+			  'interpolate',
+			  ['linear'],
+			  ['zoom'],
+			  7, 0,  // Text fully transparent at zoom level 10 and below
+			  8, 1   // Text fully opaque at zoom level 11 and above
+			]
+		  }
+		});
 		
 		// Move layer to top
 		map.moveLayer('Local and Statewide Outlets');
