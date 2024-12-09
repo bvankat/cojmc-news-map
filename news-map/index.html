@@ -780,7 +780,7 @@
 					const props = feature.properties;
 					var callsign = props.callsign;
 					var freq = props.frequency;
-					var service = props.newsorg_am 
+					var service = props.service; 
 					var owner = props.newsorg_ow;
 					popupContent += "<tr><td>" + callsign + "</td><td>" + service + "</td><tr>";
 				});
@@ -800,7 +800,7 @@
 					const props = feature.properties;
 					var callsign = props.callsign;
 					var freq = props.frequency;
-					var service = props.newsorg_am 
+					var service = props.service; 
 					var owner = props.newsorg_ow;
 					popupContent += "<tr><td>" + callsign + "</td><td>" + service + "</td><tr>";
 				});
@@ -1072,8 +1072,8 @@
 				popupContent += "<h3 class='outlets'>Outlets at this location</h3><table class='outlets'><thead><th>Name</th><th>Ownership</th></thead><tbody>";
 				
 				localOutlets.forEach((outlet) => {
-					var outletName = outlet.properties.newsorg_na;
-					var outletOwner = outlet.properties.newsorg_ow;
+					var outletName = outlet.properties.Name;
+					var outletOwner = outlet.properties.Owner;
 					popupContent += "<tr><td>" + outletName + "</td><td>" + outletOwner + "</td><tr>";
 				});
 				
