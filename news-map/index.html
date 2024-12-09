@@ -93,8 +93,8 @@
 		<nav id="menu-demographics" class="map-menu"><p>DATA LAYERS</p>
 			<select id="layer-switcher">
 				<option value="">Select a layer</option>
-				<option value="Journalists per County" selected>Journalists per County</option>
-				<option value="Outlets per County">Outlets per County</option>
+				<option value="Outlets per County" selected>Outlets per County</option>
+				<option value="Journalists per County">Journalists per County</option>
 				<option value="Race % - White">Race: White %</option>
 				<option value="Race % - Hispanic">Race: Hispanic %</option>
 				<option value="US Born">Citizenship: U.S. Born %</option>
@@ -491,7 +491,7 @@
 		}); 
 		
 		// Move layer to top
-		map.moveLayer('Local and Statewide Outlets', 'Journalists per County');
+		map.moveLayer('Local and Statewide Outlets');
 			
 		const mapLayers = map.getStyle().layers;
 		console.log('Layers loaded: ', mapLayers);
