@@ -46,10 +46,11 @@
 	  opacity: 80%;
 	  height: 16px;
 	  background: linear-gradient(to right, 
-		rgba(235, 255, 163, 1) 0%,
-		rgba(0, 209, 52, 1) 33%,
-		rgba(0, 163, 245, 1) 66%,
-		rgba(5, 87, 250, 1) 100%
+		  #f3e79b 20%,
+		  rgba(250, 189, 133, 1) 40%,
+		  rgba(218, 113, 143, 1) 60%,
+		  rgba(169, 91, 157, 1) 80%,
+		  rgba(93, 84, 166, 1) 100%
 	  );
 	  border-radius: 2px;
 	  margin: 6px 0;
@@ -111,12 +112,13 @@
 
 	<div id="map"></div>
 
+	<!-- Default legend shows Outlets per County -->
 	<div class="map-overlay" id="legend">
-		<p class="legend-name">Journalists per County</p>
+		<p class="legend-name">Outlets per County</p>
 		<div class="legend-bar"></div>
 		<div class="legend-labels">
 		  <span class="min">1</span>
-		  <span class="max">134</span>
+		  <span class="max">20</span>
 		</div>
 	</div>
 	
@@ -310,9 +312,9 @@
 	const map = new mapboxgl.Map({
 		container: 'map',
 		style: 'mapbox://styles/bvankat/clzx3cfap007501qr6xlh9qn6',
-		zoom: 5.5,
+		zoom: 7,
 		maxZoom: 12,
-		center: [-100, 41.5],
+		center: [-99, 41.5],
 		maxBounds: bounds
 	});
 	
@@ -327,7 +329,6 @@
 	
 	// Zoom controls
 	map.addControl(geocoder, 'top-left');
-	map.scrollZoom.disable();
 	var nav = new mapboxgl.NavigationControl();
 	map.addControl(nav, 'top-right');
 	map.fitBounds(bounds);
@@ -871,7 +872,6 @@
 					popupContent +=
 						"<h3>News Outlets in " + county + "</h3>" +
 						"<table><tbody>" +
-						"<tr><td>Local</td><td>" + local_outlets + "</td></tr></tbody></table>" +
 						"<p style='margin-top: 5px; font-size: 12px; color #666'>Outlets: " + outlet_names + "</p>";		
 				}
 			}
