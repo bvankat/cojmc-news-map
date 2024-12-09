@@ -320,6 +320,7 @@
 	const geocoder = new MapboxGeocoder({
 		accessToken: mapboxgl.accessToken,
 		mapboxgl: mapboxgl,
+		marker: false,
 		placeholder: 'Find address or zip',
 		bbox: [-104.053514, 39.999751, -95.30829, 43.001707] // Bounding box for Nebraska
 	});
@@ -583,8 +584,8 @@
 		
 		// Name each of the Data layers
 		const DemographicLayers = [
-			'Journalists per County', 
 			'Outlets per County', 
+			'Journalists per County', 
 			'Race % - White', 
 			'Race % - Hispanic', 
 			'Education', 
@@ -725,8 +726,8 @@
 			const tvAndRadioCoverage = map.queryRenderedFeatures(e.point, { layers: ['TV and Radio Coverage'] });
 			const nebraskaPublicMedia = map.queryRenderedFeatures(e.point, { layers: ['Nebraska Public Media'] });
 			
-			const journalistsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Journalists per County'] });
 			const outletsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Outlets per County'] });
+			const journalistsPerCounty = map.queryRenderedFeatures(e.point, { layers: ['Journalists per County'] });
 			const raceWhite = map.queryRenderedFeatures(e.point, { layers: ['Race % - White'] });
 			const raceHispanic = map.queryRenderedFeatures(e.point, { layers: ['Race % - Hispanic'] });
 			const education = map.queryRenderedFeatures(e.point, { layers: ['Education'] });
@@ -809,7 +810,7 @@
 			}
 
 
-			//OUTLETS PER COUNTY
+			// OUTLETS PER COUNTY
 			if (outletsPerCounty.length > 0) {
 				
 				console.log({outletsPerCounty});
