@@ -150,7 +150,7 @@ var config = {
 			alignment: 'right',
 			hidden: false,
 			title: '',
-			description: '<p><strong><span class="orange">17 county seats</span> have no local news organization.</strong></p><p>There are no local news organizations based in: Alliance, Bartlett, Beaver City, Brewster, Center, Clay Center, Dakota City, Elwood, Tryon, Harrison, Harrisburg, Osceola, Papillion, Plattsmouth, Rushville, Stockville and Taylor.',
+			description: '<p><strong><span class="orange">Sixteen county seats</span> have no local news organization.</strong></p><p>There are no local news organizations based in: Bartlett, Beaver City, Brewster, Center, Clay Center, Dakota City, Elwood, Tryon, Harrison, Harrisburg, Osceola, Papillion, Plattsmouth, Rushville, Stockville and Taylor.',
 			location: {
 				center: [-97.765, 40.768],
 				zoom: 5.5,
