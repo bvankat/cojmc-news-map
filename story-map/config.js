@@ -215,7 +215,7 @@ var config = {
 			alignment: 'fully',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Who has access to local news and who does not?</strong></p><p>Through interviews and nine months of data collection, this project aims to provide more detailed information about local news access in Nebraska by mapping not only local news organizations but also for full-time and part-time local journalists by county to better understand how news is being covered.</p><div class="buttons"><a href="" class="button">Read the report</a><a href="" class="button">Explore the map</a></div>',
+			description: '<p><strong>Who has access to local news and who does not?</strong></p><p>Through interviews and nine months of data collection, this project aims to provide more detailed information about local news access in Nebraska by mapping not only local news organizations but also for full-time and part-time local journalists by county to better understand how news is being covered.</p><div class="buttons"><a href="https://newsmap.unl.edu/report/" class="button" target="_blank">Read the report</a><a href="https://newsmap.unl.edu/news-map/" target="_blank" class="button">Explore the map</a></div>',
 			location: {
 				center: [-98.765, 41.768],
 				zoom: 5,
