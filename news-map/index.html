@@ -710,6 +710,12 @@
 				if (visibility === 'visible') { // if already visible, turn it off
 					map.setLayoutProperty(clickedLayer, 'visibility', 'none');
 					this.className = '';
+					
+					if (clickedLayer === 'Local and Statewide Outlets') {
+						const toggleAlsoLayer = 'outlet-labels';
+						map.setLayoutProperty(toggleAlsoLayer, 'visibility', 'none');
+					}
+					
 				} else { // If visibility is 'none' -- All non-default layers
 					if(this.className === 'active') { // if the link is already marked active (default layer only)
 						this.className='';
@@ -718,6 +724,12 @@
 							'visibility',
 							'none'
 						);
+						
+						if (clickedLayer === 'Local and Statewide Outlets') {
+							const toggleAlsoLayer = 'outlet-labels';
+							map.setLayoutProperty(toggleAlsoLayer, 'visibility', 'none');
+						}
+						
 					} else { // if layer isn't visible, activate it when clicked
 						this.className = 'active';
 						map.setLayoutProperty(
@@ -725,6 +737,11 @@
 							'visibility',
 							'visible'
 						);
+					
+						if (clickedLayer === 'Local and Statewide Outlets') {
+							const toggleAlsoLayer = 'outlet-labels';
+							map.setLayoutProperty(toggleAlsoLayer, 'visibility', 'visible');
+						}
 					}
 				}
 			
@@ -1110,6 +1127,7 @@
 			if (popupContent) {
 			currentPopup.setHTML(popupContent).addTo(map);
 			}
+			
 		
 		}); // This is the end of map.on('click');
 		
