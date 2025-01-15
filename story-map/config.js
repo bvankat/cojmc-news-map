@@ -20,7 +20,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>There are 584 full-time local journalists working in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
+			description: '<p><strong>There are 565 full-time local journalists working at local news organizations in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
 			location: {
 				center: [-100.53151, 42],
 				zoom: 5.4,
@@ -56,7 +56,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Nebraska has 196 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
+			description: '<p><strong>Nebraska has 203 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
 			location: {
 				center: [-98.53151, 40.98629],
 				zoom: 5.6,
@@ -87,7 +87,7 @@ var config = {
 			alignment: 'right',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Eleven Nebraska counties have <span class="red">no local news organizations</span>.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
+			description: '<p><strong>Nine Nebraska counties have <span class="red">no local news organizations</span>.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
 			location: {
 				center: [-96.710, 40.833],
 				zoom: 5.4,
@@ -179,7 +179,7 @@ var config = {
 			alignment: 'fully',
 			hidden: false,
 			title: '',
-			description: '<strong><span class="red">Telemundo Nebraska</span> is the only professional journalism organization in the state providing local news in Spanish with five local reporters in Omaha and one in Grand Island.</strong>',
+			description: '<strong><span class="red">Telemundo Nebraska</span> is the only professional journalism organization in the state providing local news in Spanish with three local reporters in Omaha. Telemundo previously had a full-time Spanish-speaking local journalist in Grand Island.</strong>',
 			location: {
 				center: [-96.765, 41.768],
 				zoom: 6.2,
