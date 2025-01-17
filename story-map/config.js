@@ -23,7 +23,7 @@ var config = {
 			description: '<p><strong>There are 565 full-time local journalists working at local news organizations in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
 			location: {
 				center: [-100.53151, 42],
-				zoom: 5.4,
+				zoom: 4.8,
 				pitch: 20,
 				bearing: 0,
 				duration: 3000
@@ -59,7 +59,7 @@ var config = {
 			description: '<p><strong>Nebraska has 203 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
 			location: {
 				center: [-98.53151, 40.98629],
-				zoom: 5.6,
+				zoom: 5,
 				pitch: 20,
 				bearing: 0,
 				duration: 4000
@@ -90,7 +90,7 @@ var config = {
 			description: '<p><strong>Nine Nebraska counties have <span class="red">no local news organizations</span>.</strong></p><p>There are 42,942 Nebraskans living in counties that don\'t have any full-time or part-time local journalists.</strong></p>',
 			location: {
 				center: [-96.710, 40.833],
-				zoom: 5.4,
+				zoom: 4.8,
 				duration: 5000
 			},
 			mapAnimation: 'flyTo',
@@ -119,7 +119,7 @@ var config = {
 			description: '<p><strong>Fifty-five counties have <span class="red">two or fewer full-time local journalists</span>.</strong></p><p>That\'s 58% of the state\'s counties.</p>',
 			location: {
 				center: [-99.886, 42.103],
-				zoom: 5.7,
+				zoom: 5.1,
 				duration: 5000
 			},
 			mapAnimation: 'flyTo',
@@ -153,7 +153,7 @@ var config = {
 			description: '<p><strong><span class="orange">Sixteen county seats</span> have no local news organization.</strong></p><p>There are no local news organizations based in: Bartlett, Beaver City, Brewster, Center, Clay Center, Dakota City, Elwood, Tryon, Harrison, Harrisburg, Osceola, Papillion, Plattsmouth, Rushville, Stockville and Taylor.',
 			location: {
 				center: [-97.765, 40.768],
-				zoom: 5.5,
+				zoom: 4.9,
 				duration: 3000
 			},
 			mapAnimation: 'flyTo',
@@ -182,7 +182,7 @@ var config = {
 			description: '<strong><span class="red">Telemundo Nebraska</span> is the only professional journalism organization in the state providing local news in Spanish with three local reporters in Omaha. Telemundo previously had a full-time Spanish-speaking local journalist in Grand Island.</strong>',
 			location: {
 				center: [-96.765, 41.768],
-				zoom: 6.2,
+				zoom: 5.6,
 				pitch: 10,
 				duration: 5000
 			},
@@ -218,7 +218,7 @@ var config = {
 			description: '<p><strong>Who has access to local news and who does not?</strong></p><p>Through interviews and nine months of data collection, this project aims to provide more detailed information about local news access in Nebraska by mapping not only local news organizations but also for full-time and part-time local journalists by county to better understand how news is being covered.</p><div class="buttons"><a href="https://newsmap.unl.edu/report/" class="button" target="_blank">Read the report</a><a href="https://newsmap.unl.edu/news-map/" target="_blank" class="button">Explore the map</a></div>',
 			location: {
 				center: [-98.765, 41.768],
-				zoom: 5,
+				zoom: 4.4,
 				pitch: 10,
 				duration: 5000
 			},
