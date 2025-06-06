@@ -20,7 +20,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>There are 565 full-time local journalists working at local news organizations in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
+			description: '<p><strong>There are 568 full-time local journalists working at local news organizations in Nebraska.</strong></p><p><span class="blue">Blue</span> and <span class="green">green</span> counties on the map have higher concentrations of full- and part-time journalists.</p>',
 			location: {
 				center: [-100.53151, 42],
 				zoom: 4.8,
@@ -56,7 +56,7 @@ var config = {
 			alignment: 'left',
 			hidden: false,
 			title: '',
-			description: '<p><strong>Nebraska has 203 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
+			description: '<p><strong>Nebraska has 206 local and statewide news outlets.</strong></p><p><span class="red">Red dots</span> represent local outlets and <span class="orange">orange dots</span> are for statewide outlets.</p>',
 			location: {
 				center: [-98.53151, 40.98629],
 				zoom: 5,
